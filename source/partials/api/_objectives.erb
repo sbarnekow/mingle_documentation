@@ -22,14 +22,17 @@ http://yourname:password@your.mingle.server:8080/api/v2/programs/test_program/pl
 You can get information about a single objective on your program plan, including the objective number, name and identifier, start date and end date, and cards that have been added to the objective, either manually or via auto-sync.
 
 ## Get All Objectives within a Plan
+You can get information about all objectives in your program plan, including the objective number, name and identifier as well as start and end dates.
+
 ```shell
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/programs/test_program/plan/objectives.xml
 ```
-You can get information about all objectives in your program plan, including the objective number, name and identifier as well as start and end dates.
 
 ## Update a Planned Objective
+You can update different attributes of a planned objective, including its name, start date and end date. (Currently, this API does not support adding work to a planned objective.
+
 ```shell
 PUT
 
@@ -39,9 +42,12 @@ objective[name]=new name
 objective[start_at]=2020-01-15
 objective[end_at]=2020-06-15
 ```
-You can update different attributes of a planned objective, including its name, start date and end date. (Currently, this API does not support adding work to a planned objective.)
 
 ## Create an Objective within a Plan
+The URL of api/v2/programs/test_program/plan/objectives.xml represents the list of objective resources for the program with identifier test_program. Upon execution of this request, the post parameters will be used to create an objective in the plan in the program with the identifier "test_program". The value of the name, start_at, and end_at attributes will be set to the respective specified values of "first objective", "January 15, 2020", and "June 15, 2020".
+
+The URL of api/v2/programs/test_program/plan/objectives.xml represents the list of objective resources for the program with identifier test_program. Upon execution of this request, the post parameters will be used to create an objective in the plan in the program with the identifier "test_program". The value of the name, start_at, and end_at attributes will be set to the respective specified values of "first objective", “January 15, 2013”, and “June 15, 2013”.
+
 ```shell
 POST
 
@@ -52,15 +58,11 @@ objective[start_date] : The objective start date (yyyy-mm-dd format)
 objective[end_date] : The objective end date (yyyy-mm-dd format)
 ```
 
-The URL of api/v2/programs/test_program/plan/objectives.xml represents the list of objective resources for the program with identifier test_program. Upon execution of this request, the post parameters will be used to create an objective in the plan in the program with the identifier "test_program". The value of the name, start_at, and end_at attributes will be set to the respective specified values of "first objective", "January 15, 2020", and "June 15, 2020".
-
-The URL of api/v2/programs/test_program/plan/objectives.xml represents the list of objective resources for the program with identifier test_program. Upon execution of this request, the post parameters will be used to create an objective in the plan in the program with the identifier "test_program". The value of the name, start_at, and end_at attributes will be set to the respective specified values of "first objective", “January 15, 2013”, and “June 15, 2013”.
-
 ## Delete an Objective
+This request allows you to delete an objective from program plan.
+
 ```shell
 DELETE
 
 http://yourname:password@your.mingle.server:8080/api/v2/programs/program_identifier/plan/objectives/test_objective.xml
 ```
-
-This request allows you to delete an objective from program plan.
