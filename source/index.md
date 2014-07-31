@@ -127,6 +127,29 @@ To create a new card, you can send a POST request with two necessary parameters 
 
 ## Find All Cards or Get a Set of Cards
 
+```javascript
+  function getCardsXml (){
+      $j.ajax({
+      url: 'https://sarah.mingle.thoughtworks.com/api/v2/projects/clix/cards.xml',
+      data: null,
+      success: function(data, textStatus, jqXHR) {
+        console.log("Response: " + data.responseText);
+        console.log("Success!!!!");
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(":'-(");
+        console.log("Response: " + jqXHR.responseText);
+        console.log("HTTP stats: " + textStatus);
+        console.log("error: " + errorThrown);
+      },
+      complete: function(jqXHR, textStatus) {
+        console.log("Complete");
+        console.log(textStatus);
+    }
+    });
+  };       
+```
+
 ## Find a Single Card
 
 ## Update a Card

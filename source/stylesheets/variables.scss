@@ -23,8 +23,8 @@ under the License.
 
 // BACKGROUND COLORS
 ////////////////////
-$nav-bg: #393939;
-$examples-bg: #393939;
+$nav-bg: #3f3f3f;
+$examples-bg: #3f3f3f;
 $code-bg: #292929;
 $code-annotation-bg: #1c1c1c;
 $nav-subitem-bg: #262626;
@@ -74,7 +74,9 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 
 %header-font {
   @extend %default-font;
-  font-weight: bold;
+  font-weight: 300;
+  letter-spacing: 1px;
+  &:hover { color: #c3c3c3 }
 }
 
 %code-font {
