@@ -9,3 +9,7 @@ To get started with Slate :
 run `bundle install`
 to start the server run `bundle exec middleman server`
 
+To Do : 
+
+1. Build Navbar 
+2. Investigate attachments
