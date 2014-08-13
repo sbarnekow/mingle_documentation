@@ -9,6 +9,8 @@ set :images_dir, 'images'
 set :fonts_dir, 'fonts'
 
 set :markdown_engine, :redcarpet
+set :markdown,
+    :layout_engine => :erb
 
 set :markdown, :fenced_code_blocks => true, :smartypants => true, :disable_indented_code_blocks => true, :prettify => true, :tables => true, :with_toc_data => true, :no_intra_emphasis => true
 
