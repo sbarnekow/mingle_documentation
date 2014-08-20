@@ -16,353 +16,51 @@ includes:
 search: true
 ---
 # Introduction
-
 <%= partial "partials/api/introduction" %>
 
-# Configuration
-
-<%= partial "partials/api/configuration" %>
-
+# Getting Started
+<%= partial "partials/api/gettingstarted" %>
 
 # Projects
-
-## Metadata
-
-## Create a New Project
-
-## Find All Projects
-
-## Find a Single Project
+<%= partial "partials/api/projects" %>
 
 # Cards
-## Metadata
-`name` String.
-
-`description` String; the HTML that Mingle renders for the card description.
-
-`type` Resource; name of the card type for each card; string.
-
-`id` Integer; read only, system assigned unique identifier for a card.
-
-`number` Integer; read only, unique identifier of a card within a project - Use this for both GET and PUT.
-
-`project` Resource; name and identifier of a project a card belongs to; both strings.
-
-`version` Integer; read only, current card version. You can specify the version to get history version of the card.
-
-`project_card_rank` Integer; read only, the rank of the card in a project.
-
-`created_on` Datetime; read only, date and time of creating card.
-
-`modified_on` Datetime; read only, date and time of last modification.
-
-`modified_by` Resource; name and login id of user who is the last to modify the card; both String, read only.
-
- `created_by` Resource; name and login id of user who created the card; both String, read only.
-
-`properties` Array; property: Resource; name and a current value for each card property defined for current card's card type are listed; Data type will depend on the property while property name is always String. The property also includes attributes about the property type_description and whether or not it is hidden.
-
-`tags` String; read only, comma-delimited list of tags associated with the card.
-
-`rendered_description` Resource; Link to rendered card description as HTML.
-
-## Create a New Card
-
-To create a new card, you can send a POST request with two necessary parameters - card type and name. 
-
-## Find All Cards or Get a Set of Cards
-
-```javascript
-  function getCardsXml (){
-      $j.ajax({
-      url: 'https://sarah.mingle.thoughtworks.com/api/v2/projects/clix/cards.xml',
-      data: null,
-      success: function(data, textStatus, jqXHR) {
-        console.log("Response: " + data.responseText);
-        console.log("Success!!!!");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log(":'-(");
-        console.log("Response: " + jqXHR.responseText);
-        console.log("HTTP stats: " + textStatus);
-        console.log("error: " + errorThrown);
-      },
-      complete: function(jqXHR, textStatus) {
-        console.log("Complete");
-        console.log(textStatus);
-    }
-    });
-  };       
-```
-
-## Find a Single Card
-
-## Update a Card
-
-You can update different attributes on a card such as card name, card description, card type or properties that are available on card via card resource API.
-### How to update different kinds of properties
-
-Managed/Unmanaged text: Use the text value of the value you would like to update the value to
-
-Managed/Unmanaged numbers: Use the numeric value you would like to set the property to
-
-Date: Use the date string in the project date format
-
-Team member: Use the id of the user you would like to update the value to. You can obtain the user id by looking up the user using the API.
-Card: Use the card number of the card you would like to update the value to.
-
-## Get Card Description as HTML
-
-From a card resource, follow the rendered_description resource to retrieve the rendered description for a card as HTML. Notice that rendered_description does not contain any styling information. You may reference the Mingle stylesheet, found on every Mingle page, when displaying rendered_description if you would like it to be styled as is in Mingle. If there are macros in the description, the macros will be rendered as part of the rendered_description. Any JavaScript in the rendered description will be removed from rendered_description. 
+<%= partial "partials/api/cards" %>
 
 # Properties
-
-## Metadata 
-
-## Create a Card Property
-
-## Get Property Definitions for a Project
+<%= partial "partials/api/properties" %>
 
 # Transitions
-
-## Metadata
-
-## Get Executable Transitions
-
-## Get All Transitions for a Project
-
-## Execute a Transition
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import 'kittn'
-
-api = Kittn.authorize('meowmeowmeow')
-```
-
-```curl
-# With curl, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace `meowmeowmeow` with your personal API key.
-</aside>
+<%= partial "partials/api/transitions" %>
 
 # Pages
-
-## Create a Page
-
-## Find all Pages in a Project
-
-## Update a Page
+<%= partial "partials/api/pages" %>
 
 # MQL
-
-## JSON/JSONP/XML
-
-## execute_mql
+<%= partial "partials/api/MQL" %>
 
 # Events
-
-## Metadata 
-
-### Feed/Entries
-
-### Cards
-
-### Pages
-
-### Objectives
-
-### Revisions
-
-### Feed Correction
-
-## Feed Navigation
-
-## List of Events from a Project
-
-## Get Objective Related Events from Planner
+<%= partial "partials/api/events" %>
 
 # Favorites
-
-## Metadata
-
-## Get All Team Favorites
+<%= partial "partials/api/favorites" %>
 
 # Objectives
-
-## Metadata
-## Get a Single Objective within Planner
-## Get All Objectives within a Plan
-## Update a Planned Objective
-## Create an Objective within a Plan
-## Delete an Objective
+<%= partial "partials/api/objectives" %>
 
 # Comments and Murmurs
-
-## Metadata
-## Post a Murmur
+<%= partial "partials/api/murmurs" %>
 
 # SCM Configuration
-
-## Metadata
-## On Site Customers
-### SVN
-### Mercurial
-### Perforce
-### Git
-
-## SaaS Customers
-### Github
+<%= partial "partials/api/scm" %>
 
 # Users
+<%= partial "partials/api/users" %>
 
 # Version Info
-
-The request locates the version number and the revision number for the Mingle instance you are currently using. All Mingle user types can get this information via API.
-
-```curl 
-curl -X GET 'http://sarah:p@localhost:8080/api/v2/info.xml'
-<?xml version="1.0" encoding="UTF-8"?>
-<info>
-  <version>version_number</version>
-  <revision>revision_number</revision>
-</info>
-```
-
+<%= partial "partials/api/versions" %>
 
 # Tips and Tricks
-
-* The URL to POST/PUT/DELETE may be slightly different from the GET URL
-* To POST a resource to a URL, the resource should be sent as a parameters
-* Boolean values can be sent as the strings 'true' or 'false'
-* Mingle only supports ActiveResource 2.0.2 or later.
-* To specify parameters as shown in the examples above you will have to set the request header for Content-Type to "application/x-www-form-urlencoded".
-* If you are injecting a macro into a card description via the API, you must open and close the macro markup with {{ }}.
-* If you are a Mingle or a project admin, you can update hidden properties as well.
+<%= partial "partials/api/tipsntricks" %>
 
 
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import 'kittn'
-
-api = Kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```curl
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import 'kittn'
-
-api = Kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the cat to retrieve

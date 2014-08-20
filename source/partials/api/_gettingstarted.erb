@@ -1,0 +1,60 @@
+## Authentication
+You can authenticate to the Mingle API using HMAC authencatication.
+
+To get your HMAC key, go to your profile, accessible in the top right corner of your Mingle, and navigate to the tab titled “HMAC Auth Key” where you can use the “Generate” button to generate a new key. This will download a CSV titled “credentials.csv” to your machine which holds your HMAC username and key.  	
+
+<aside class="notice">Please note that regenerating your HMAC key will invalidate your existing key.</aside>
+
+## Making your first request
+
+Mingle comes with some standard metadata related to cards. To illustrate a common use of Mingle’s API, Mingle’s standard card metadata is below : 
+
+Form Data
+
+`card[name] String`
+
+`card[description] Text`
+
+`card[created_at] DateTime`
+
+`card[created_by] String`
+
+`card[type] String`
+
+`card[number] Integer`
+
+`card[properties] Array`
+
+XML
+
+	<card>
+		<name>2</name>
+		<description nil="true"></description>
+		<card_type>
+		<name>Iteration</name>
+		</card_type>
+		<number type="integer">10</number>
+		<properties type="array">
+			<property type_description="Automatically generated from the team list" hidden="false">
+			<name>Owner</name>
+			<value nil="true"></value>
+			</property>
+		</properties>
+		<tags>
+		</tags>
+	</card>
+
+
+JSON
+
+`{ :card => { :type => "story", :name => "Test Story" }}`
+
+## Ruby
+
+The easiest way to authenticate via Ruby is to use the gem api-auth. To install this gem, run `gem install api-auth` and include it in the beginning of your script
+
+## Javascript
+
+Mingle does not support cross-site scripting. To use Javascript to access the API, you will need to run the code from within Mingle via a our Custom Macro Toolkit, or ported to Mingle. This is only available to On-Site customers.
+
+## cURL
