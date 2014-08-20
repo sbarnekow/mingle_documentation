@@ -1,0 +1,150 @@
+## Metadata
+`name` String.
+
+`description` String; the HTML that Mingle renders for the card description.
+
+`type` Resource; name of the card type for each card; string.
+
+`id` Integer; read only, system assigned unique identifier for a card.
+
+`number` Integer; read only, unique identifier of a card within a project - Use this for both GET and PUT.
+
+`project` Resource; name and identifier of a project a card belongs to; both strings.
+
+`version` Integer; read only, current card version. You can specify the version to get history version of the card.
+
+`project_card_rank` Integer; read only, the rank of the card in a project.
+
+`created_on` Datetime; read only, date and time of creating card.
+
+`modified_on` Datetime; read only, date and time of last modification.
+
+`modified_by` Resource; name and login id of user who is the last to modify the card; both String, read only.
+
+ `created_by` Resource; name and login id of user who created the card; both String, read only.
+
+`properties` Array; property: Resource; name and a current value for each card property defined for current card's card type are listed; Data type will depend on the property while property name is always String. The property also includes attributes about the property type_description and whether or not it is hidden.
+
+`tags` String; read only, comma-delimited list of tags associated with the card.
+
+`rendered_description` Resource; Link to rendered card description as HTML.
+
+## Create a New Card
+
+To create a new card, you can send a POST request with two necessary parameters - card type and name. 
+
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = '<MINGLE RESOURCE URL>'
+PARAMS = { :card => { :type => "Story", :name => "Test Story Card" }}
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_post(url, params, options={})
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+    body = params.to_json
+
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = body
+
+    request['Content-Type'] = 'application/json'
+    request['Content-Length'] = body.bytesize
+
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    if response.code.to_i > 300
+      raise UnexpectedResponseError, <<-ERROR
+      \nRequest URL: #{url}
+      Response: #{response.code} #{response.message}
+      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      ERROR
+  end
+end
+```
+
+```javascript
+function updateCardXml (){
+  $j.ajax({
+    url: '<MINGLE RESOURCE URL>',
+    type: 'POST',
+    data: { card: { name: 'Test Story Card', card_type_name: 'Story '} },
+    success: function(data, textStatus, jqXHR) {
+    console.log("Response: " + data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+    console.log("Response: " + jqXHR.responseText);
+    console.log("HTTP stats: " + textStatus);
+    console.log("error: " + errorThrown);
+    },
+    complete: function(jqXHR, textStatus) {
+    console.log("Complete");
+    console.log(textStatus);
+  }
+  });
+};
+```
+
+```shell
+curl -x POST -D 'card[name]=Test Story Card card[type]=Story' <MINGLE RESOURCE URL>
+```
+
+## Find All Cards or Get a Set of Cards
+
+```javascript
+  function getCardsXml (){
+      $j.ajax({
+      url: 'https://sarah.mingle.thoughtworks.com/api/v2/projects/clix/cards.xml',
+      data: null,
+      success: function(data, textStatus, jqXHR) {
+        console.log("Response: " + data.responseText);
+        console.log("Success!!!!");
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(":'-(");
+        console.log("Response: " + jqXHR.responseText);
+        console.log("HTTP stats: " + textStatus);
+        console.log("error: " + errorThrown);
+      },
+      complete: function(jqXHR, textStatus) {
+        console.log("Complete");
+        console.log(textStatus);
+    }
+    });
+  };       
+```
+
+## Find a Single Card
+
+## Update a Card
+
+You can update different attributes on a card such as card name, card description, card type or properties that are available on card via card resource API.
+### How to update different kinds of properties
+
+Managed/Unmanaged text: Use the text value of the value you would like to update the value to
+
+Managed/Unmanaged numbers: Use the numeric value you would like to set the property to
+
+Date: Use the date string in the project date format
+
+Team member: Use the id of the user you would like to update the value to. You can obtain the user id by looking up the user using the API.
+Card: Use the card number of the card you would like to update the value to.
+
+## Get Card Description as HTML
+
+From a card resource, follow the rendered_description resource to retrieve the rendered description for a card as HTML. Notice that rendered_description does not contain any styling information. You may reference the Mingle stylesheet, found on every Mingle page, when displaying rendered_description if you would like it to be styled as is in Mingle. If there are macros in the description, the macros will be rendered as part of the rendered_description. Any JavaScript in the rendered description will be removed from rendered_description. 
