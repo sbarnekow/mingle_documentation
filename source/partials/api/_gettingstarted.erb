@@ -7,54 +7,59 @@ To get your HMAC key, go to your profile, accessible in the top right corner of 
 
 ## Making your first request
 
-Mingle comes with some standard metadata related to cards. To illustrate a common use of Mingle’s API, Mingle’s standard card metadata is below : 
+Each Mingle object comes with standard metadata. 
 
-Form Data
+To illustrate a common use of Mingle’s API, Mingle’s standard card metadata is below : 
 
-`card[name] String`
+### Form Data
 
-`card[description] Text`
+card[name] String
+    
+card[description] Text
 
-`card[created_at] DateTime`
+card[created_at] DateTime
 
-`card[created_by] String`
+card[created_by] String
 
-`card[type] String`
+card[type] String
 
-`card[number] Integer`
+card[number] Integer
 
-`card[properties] Array`
-
-XML
-
-	<card>
-		<name>2</name>
-		<description nil="true"></description>
-		<card_type>
-		<name>Iteration</name>
-		</card_type>
-		<number type="integer">10</number>
-		<properties type="array">
-			<property type_description="Automatically generated from the team list" hidden="false">
-			<name>Owner</name>
-			<value nil="true"></value>
-			</property>
-		</properties>
-		<tags>
-		</tags>
-	</card>
+card[properties] Array
 
 
-JSON
+### XML Data
 
-`{ :card => { :type => "story", :name => "Test Story" }}`
+<card>
+	<name>2</name>
+	<description nil="true"></description>
+	<card_type>
+	<name>Iteration</name>
+	</card_type>
+	<number type="integer">10</number>
+	<properties type="array">
+		<property type_description="Automatically generated from the team list" hidden="false">
+		<name>Owner</name>
+		<value nil="true"></value>
+		</property>
+	</properties>
+	<tags>
+	</tags>
+</card>
+
+### JSON Data
+
+{ :card => { :type => "story", :name => "Test Story" }}
+
 
 ## Ruby
 
-The easiest way to authenticate via Ruby is to use the gem api-auth. To install this gem, run `gem install api-auth` and include it in the beginning of your script
+The easiest way to authenticate with Ruby is to use the gem `api-auth`. To install this gem, run `gem install api-auth` and include it in the beginning of your script.
 
 ## Javascript
 
-Mingle does not support cross-site scripting. To use Javascript to access the API, you will need to run the code from within Mingle via a our Custom Macro Toolkit, or ported to Mingle. This is only available to On-Site customers.
+Mingle does not support cross-site scripting.  In order to use Javascript to access the API, you will need to run the code from within Mingle via a our Custom Macro Toolkit, or ported to Mingle. This is only available to On-Site customers.
 
 ## cURL
+
+All resources are available via GET request but it is not recommended that users try to submit POST, PUT, or DELETE requests via cURL due to security concerns. 

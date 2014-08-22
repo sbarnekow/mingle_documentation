@@ -31,8 +31,6 @@
 
 ## Create a New Card
 
-To create a new card, you can send a POST request with two necessary parameters - card type and name. 
-
 ```ruby
 require 'net/http'
 require 'net/https'
@@ -104,7 +102,44 @@ function updateCardXml (){
 curl -x POST -D 'card[name]=Test Story Card card[type]=Story' <MINGLE RESOURCE URL>
 ```
 
-## Find All Cards or Get a Set of Cards
+To create a new card, you can send a POST request with two necessary parameters - card type and name. 
+
+`card[name]` **Required** 
+
+`card[type]` **Required** 
+
+`card[description]`
+
+`card[properties][][name]` 
+
+`card[properties][][value]`
+
+## Find a Set of Cards
+
+`view` The name of a saved view, whose cards are to be returned back
+
+`page` A specific set of 25 results, if the list contains more than 25 results. The first 25 results are page 1. The next 25 are page 2, and so on. 
+Requesting the contents of a page of data that is past the last valid page, returns the data on the last valid page and not an empty array. If it is 
+not supplied, the default value is "1".
+
+`filters[]` Each value for this parameter represents a filter applied to the list of cards. You can also use a standard filter or a MQL filter with this parameter.
+
+`sort` The property whose value will be used to sort the cards returned
+
+`order` ASC/DESC, whether the cards will be returned in Ascending or Descending order of the sort property 
+
+`tagged_with` A comma separated list of tags that will be used to further filter the list of cards in addition to the filters
+
+**Example**
+
+`filters[]=[Type][is][story]`
+
+`filters[]=[Status][is not][accepted]`
+
+`sort=status`
+
+`order=ASC`
+
 
 ```javascript
   function getCardsXml (){
@@ -131,20 +166,29 @@ curl -x POST -D 'card[name]=Test Story Card card[type]=Story' <MINGLE RESOURCE U
 
 ## Find a Single Card
 
+```curl
+https://instance.mingle.thoughtworks.com/api/v2/project/test/1.xml
+```
+
+You can find a single card by submitting a GET request to the card's API url 
+
 ## Update a Card
 
 You can update different attributes on a card such as card name, card description, card type or properties that are available on card via card resource API.
+
 ### How to update different kinds of properties
 
-Managed/Unmanaged text: Use the text value of the value you would like to update the value to
+**Managed/Unmanaged Text**: Use the text value of the value you would like to update the value to
 
-Managed/Unmanaged numbers: Use the numeric value you would like to set the property to
+**Managed/Unmanaged Numbers**: Use the numeric value you would like to set the property to
 
-Date: Use the date string in the project date format
+**Date**: Use the date string in the project date format
 
-Team member: Use the id of the user you would like to update the value to. You can obtain the user id by looking up the user using the API.
+**Team Member**: Use the id of the user you would like to update the value to. You can obtain the user id by looking up the user using the API.
 Card: Use the card number of the card you would like to update the value to.
 
 ## Get Card Description as HTML
 
-From a card resource, follow the rendered_description resource to retrieve the rendered description for a card as HTML. Notice that rendered_description does not contain any styling information. You may reference the Mingle stylesheet, found on every Mingle page, when displaying rendered_description if you would like it to be styled as is in Mingle. If there are macros in the description, the macros will be rendered as part of the rendered_description. Any JavaScript in the rendered description will be removed from rendered_description. 
+From a card resource, follow the `rendered_description` resource to retrieve the rendered description for a card as HTML. Notice that `rendered_description` does not contain any styling information. 
+
+You may reference the Mingle stylesheet, found on every Mingle page, when displaying rendered_description if you would like it to be styled as is in Mingle. If there are macros in the description, the macros will be rendered as part of the rendered_description. Any JavaScript in the rendered description will be removed from `rendered_description`. 

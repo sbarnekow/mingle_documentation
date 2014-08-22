@@ -1,8 +1,11 @@
-The structure of a project resource, and its attributes are described below, along with their data type. Also included with each attribute is whether you are allowed to update the value. System generated field like created_at are provided only as information about the project and cannot be updated through the API.
+The structure of a project resource, and its attributes are described below, along with their data type. Also included with each attribute is whether you are allowed to update the value. System generated fields like `created_at` are provided only as information about the project and cannot be updated through the API.
+
+But can it be deleted? 
+
+While projects cannot be directly deleted, it can be marked for deletion by setting `marked_for_deletion` to true in an update call. Mingle will then take care of deleting the resource.
 
 ## Metadata
 
-project resource xml - attributes
 `name`: String
 
 `identifier`: String; this is used to lookup a project
@@ -43,15 +46,14 @@ users as team members. Users can be enrolled as full, readonly or nil.
 
 ## Create a New Project
 
-Request Method: POST
+```curl
+POST
+https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml
+```
 
-URL: /api/v2/projects.xml
+`project[name]` **Required**
 
-Parameters:
-
-`project[name]: Required`
-
-`project[identifier]: Required`
+`project[identifier]` **Required**
 
 `project[description]`
 
@@ -69,20 +71,23 @@ Parameters:
 
 ## Find All Projects
 
-Making GET requests on /api/v2/projects.xml may cause performance issues in a Mingle installation with large number of projects. Please try and use the name_and_id_only parameter described below.
-
 ```curl
-http://yourname:password@your.mingle.server:8080/api/v2/projects.xml
+GET
+https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml
 ```
 
-The above is an example of a GET request to a Mingle server running at your.mingle.server, port 8080. The request locates all project resources available on this instance. If you have "Mingle administrator" permissions, you will get all projects on that instance.
-If not, you will get a list of all projects that you are a member of.
+Making GET requests on /api/v2/projects.xml may cause performance issues in a Mingle installation with large number of projects. Please try and use the name_and_id_only parameter described below.
+
+
+The above is an example of a GET request to a Mingle server running at your.mingle.server, port 8080. The request locates all project resources available on this instance. If you have "Mingle administrator" permissions, you will get all projects on that instance. If not, you will get a list of all projects that you are a member of.
 
 ## Find All Project Names and Identifiers
 
 ```curl
-http://yourname:password@your.mingle.server:8080/api/v2/projects.xml?name_and_id_only
+GET
+https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml?name_and_id_only
 ```
+
 The above request returns name and identifier for all project resources available on this instance. If you have "Mingle administrator" permissions, you will get all projects on that instance.
 If not, you will get a list of all projects that you are a member of.
 
@@ -91,13 +96,11 @@ This is useful when you want to access the project name and identifier.
 ## Find a Single Project
 
 ```curl
-http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project.xml
+GET
+https://instance.mingle-api.thoughtworks.com/api/v2/projects/test_project.xml
 ```
 
 The above is an example of a GET request to a Mingle server running at your.mingle.server, port 8080. The request locates a project with the identifier of "test_project". You have to either have "Mingle administrator" permissions, or be a member of the team to make this call
-
-The above is an example of a POST request to a Mingle server running at your.mingle.server, port 8080. The request posts a create request with the parameters as supplied. You have to have "Mingle administrator" permissions to make this call.
-
 
 If you have sufficient permissions to perform the action and the action was successful, you will be returned a location attribute in the header of the response, which is a url from which you can get the project resource that was created.
 
