@@ -1,3 +1,91 @@
 ## Metadata 
+
+
+`id`: Integer; read only, system assigned unique identifier for a property definition.
+
+`name`: String; this is the name of the property definition.
+
+`description`: String.
+
+`data_type`: String; this field determine what data type of the property definition. Below shows what each value means. You can use following values 
+when creating a new card property.
+
+`string` - text property
+
+`numeric` - numeric property
+
+`date` - date property
+
+`user` - user property
+
+`formula` - formula property
+
+`card` - card property
+
+`is_numeric` : Boolean; determines if the property definition is a numeric property. Only Managed/Unmanaged numeric properties have this set to true.
+
+`hidden` : Boolean; determines if team members can see the property in the card anywhere other than in MQL reports.
+
+`restricted` : Boolean; determines if a managed property definition can have any more values added to it through card show/edit pages. This corresponds to 'locked' in the Mingle card properties page.
+
+`transition_only` : Boolean; this determines if the property can be updated directly or only through a transition.
+
+`project` : Resource; name and identifier of a project this property belongs to; both String, readonly.
+
+`column_name` : String; read only, this field is the name of the database column that the property definition creates in the cards table of the project. These column names determine the attributes in a card resource for this project.
+
+`position` : Integer; read only, indicates the level of this property in a tree. e.g. 1 indicates this property exist in a 1 level tree relationship 
+property which connects the first and the second card type in tree.
+
+`property_values_description` : Resource; read only, indicates the property type such as 'Managed text list', 'Managed number list', 'Automatically 
+generated from the team list', 'Formula' or 'Any card'.
+
+`card_types` : Array; list all the card types this property is available to.
+
+`property_value_details` : Array; read only, list all the values for this card property. This attribute is only available for 'Managed text list' or 
+'Managed number list' type of card property.
+
+`is_managed` : Boolean; this field determine whether this property is "Managed list" or "Any". This is a required attribute when creating a text or a 
+numeric card property.
+
+`formula` : String; the property formula. This attribute is only available and required when creating a formula type of card property.
+
+`null_is_zero` : Boolean; whether or not to replace numeric (not set) values with zero when calculating the formula result. This attribute is only available when creating a formula type of card property.
+
+Formula property 
+
+property_definition[data_type]=formula
+property_definition[formula]=size * 1
+property_definition[null_is_zero]=true
+
+
 ## Create a Card Property
+
+```curl
+https://instance.mingle-api.thoughtworks.com/api/v2/projects/project_identifier/property_definitions.xml
+```
+
+`property_definition[name]` String **Required**
+
+`property_definition[data_type]` String **Required**
+
+`property_definition[is_managed]` String **Required** only if creating a numeric or text type of card property
+
+`property_definition[formula]` String **Required** only if creating a formula type of card property
+
+`property_definition[null_is_zero]` Boolean **Only available when creating a formula type of card property**
+
+`property_definition[description]` String
+
+`property_definition[card_types][][name]` String
+
 ## Get Property Definitions for a Project
+
+```curl
+GET
+https://instance.mingle-api.thoughtworks.com/api/v2/projects/project_identifier/property_definitions.xml
+```
+
+Performing a GET request on the `/api/v2/projects/test_project/property_definitions.xml` represents the listing of all property definition resources for the project with identifier `test_project`.
+
+
