@@ -1,14 +1,78 @@
-A card can be anything, from a work item (such as a story, task, or defect) to a release (pulling together everything that's going out of that release). You can add what we call "properties" to each card "type" so you can track information relavent to specific types of work. For example, a work card could have an "owner" property so you can see who's working on it, and a release card could have a "release date" property so you can see when you're shooting to deliver. You can also created relationships between and among cards using card "trees".
+A card can be anything, from a work item (such as a story, task, or defect) to a sprint, feature, goal, or release. You can add **properties** to each card "type" so you can track information relavent to specific types of work. For example, a work card could have an "owner" property so you can see who's working on it, and a release card could have a "release date" property so you can see when you're shooting to deliver. You can also **create relationships** between and among cards using **card trees"**.
 
-create new card
+## Create a Card ##
+
+To create a card, just click on the **blue + button** in the column you want to add work to. When you do this, the newly added card will adopt all of the properties associated with that column.
+
+![Alt text](/images/blue_quick_add.png)
+
+You can also drag and drop the **"magic card"** in the lower left hand corner. Again, when you do this, the newly added card will adopt all of the properties associated with that column.
+
+![Alt text](/images/magic_card.png)
+
+N.B. If you just click the "+ Add Card" text and don't use the drag and drop magic card, the newly created card will not adopt the properties of your wall. In such case, it may not appear on your wall since it doesn't match the applied filters. Just a heads up :)
+
 
 ## Types ##
+
+Just as you can have **different types of work**, you can have **different types of cards**. For example, you can have a **story** card type, a **task** card type, a **defect** card type, and even a **feature** or **goal** card type. You can also have time-based card types, such as **sprints**, **iterations**, and **releases**. In short, since Mingle is completely configurable, you can have as many card types as you need.
+
+### Create a Card Type ###
+
+To create a new card type, go to the **Project admin** tab and click **Card types**. 
+
+![Alt text](/images/card_types.png)
+
+If you have existing card types, you'll see them listed there. **TIP: If you want to order your card types to determine the order they'll be displayed in drop down menus and lists, you can drag and drop them here.**
+
+![Alt text](/images/card_types_list_drag.png)
+
+
+To create a new card type, click the **Create New Card Type** button and name your new card type.
+
+![Alt text](/images/create_new_card_type.png)
+
+If you have existing card properties used by other card types, you can **select which properties to apply** to your new card type as well. By default, all properties will be selected, but you can unselect them if you want. And you can also create new properties that can apply to this card type only later on.
+
+![Alt text](/images/new_card_type_properties.png)
+
+
+### Delete a Card Type ###
+
+You can only delete a card type if no cards use that type. (The delete button will be disabled if cards use the type and will be enabled if no cards use the type.)
+
+To delete a card type, click the **Delete** link and confirm the deletion. N.B. If any view uses a filter with the card type you're deleting, that view will be deleted.
+
+![Alt text](/images/delete_card_type.png)
+
+
+## Defaults ##
+
+Card defaults allow you to add **default content to a card** type so you don't have to repeatedly add standard content. 
+
+For example, you might want to include a story description and an acceptance criteria section to all story cards. 
+
+To add, edit or remove card defaults, go to the **Project admin** type, click **Card types**, and then **Edit defaults** for the desired type.
+
+![Alt text](/images/card_defaults.png)
+
+Then type in your default content with our WYSIWYG editor.
+
+![Alt text](/images/edit_card_defaults.png)
+
+As you can see in the screenshot above, you can also add reports to card defaults, such queries that surface tasks and defaults related to this card, using MQL, Mingle Query Language. [Read more about MQL](#mql).
 
 
 ## Properties ##
 
+Hello
+
 ## Tags ##
 
+Hello
+
 ## Keywords ##
+
+Hello
 
 ## Export/Import Cards ##
