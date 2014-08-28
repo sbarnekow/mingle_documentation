@@ -1,4 +1,4 @@
-A card can be anything, from a work item (such as a story, task, or defect) to a sprint, feature, goal, or release. You can add **properties** to each card "type" so you can track information relavent to specific types of work. For example, a work card could have an "owner" property so you can see who's working on it, and a release card could have a "release date" property so you can see when you're shooting to deliver. You can also **create relationships** between and among cards using **card trees**.
+**A card can be anything**, from a work item (such as a **story**, **task**, or **defect**) to a **sprint**, **feature**, **goal**, or **release**. You can add **[properties](#properties)** to each card **[type](#types)** so you can track information relavent to specific types of work. For example, a work card could have an "owner" property so you can see who's working on it, and a release card could have a "release date" property so you can see when you're shooting to deliver. You can also **create relationships** between and among cards using **card [trees](#trees)**.
 
 ## Create a Card
 
@@ -23,7 +23,7 @@ To create a new card type, go to the **Project admin** tab and click **Card type
 
 ![Alt text](/images/card_types.png)
 
-If you have existing card types, you'll see them listed there. **TIP: If you want to order your card types to determine the order they'll be displayed in drop down menus and lists, you can drag and drop them here.**
+If you have existing card types, you'll see them listed there. **TIP**: If you want to order your card types to determine the order they'll be displayed in drop down menus and lists, you can drag and drop them here.
 
 ![Alt text](/images/card_types_list_drag.png)
 
@@ -65,7 +65,82 @@ As you can see in the screenshot above, you can also add reports to card default
 
 ## Properties 
 
-Hello
+Card properties are custom attributes you can apply to one or many card types. For example, you can add a "priority" property to story, tasks, and defect card types. You can define any property and apply it to any card type. You can use these properties to help **track work**, **create [views](#views)**, and **generate [reports](#reporting)**. 
+
+### Create a Card Property
+
+To create a property, go to the **Project admin** tab and click **Card properties**.
+
+![Alt text](/images/card_properties.png)
+
+Then click the **Create New Card Property** button.
+
+![Alt text](/images/create_new_property.png)
+
+You'll then be prompted to **name your property** (e.g. priority) and, if you'd like, provide description about what this property is meant to track.
+
+![Alt text](/images/new_property.png)
+
+Next, choose among the following **property types**:
+
+#### **Managed text**
+
+A managed text property allows you to choose among a list of text values defined by you.
+
+#### **Any text** 
+
+You can also have a property that supports any text value defined by any one on your team.
+
+#### **Managed number**
+
+A managed number property allows you to choose among a list of numerical values defined by you.
+
+#### **Any number**
+
+You can also have a property that supports any numerical value defined by any one on your team.
+
+#### **Team** 
+
+A team property type allows you to choose any team member as the property "value". Team property values are automatically generated to include everyone on your team. 
+
+#### **Date**
+
+Date properties allow you to assign any date as a value.
+
+#### **Formula**
+
+You can create forumla properties using other number or date properties, allowing you to automatically calculate values. **MORE HERE**
+
+#### **Card**
+
+A "card type property" allows you to have any existing card as the value for this property. For example, if I had a "sprint" property, you can choose a specific sprint card as its value.
+
+![Alt text](/images/create_property_button.png)
+
+After you've selected the property type, select the card types you want this property to apply to. Then click **Create Property**.
+
+
+### Add Property Values
+
+Once you've created your property, if your card property requires predefined values, you can create them by clicking on the "Edit" link to the right of your card property:
+
+![Alt text](/images/add_property_value.png)
+
+Then click the **Edit Values** button:
+
+![Alt text](/images/edit_values_button.png)
+
+Then add your value:
+
+![Alt text](/images/add_values_list.png)
+
+**TIP**: If you want to order your card properties to determine the order they’ll be displayed on the card, you can drag and drop them here.
+
+### Additional properties
+
+#### Relationship properties
+
+#### Aggregate properties
 
 ## Tags
 
