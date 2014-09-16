@@ -44,8 +44,21 @@ html, body {
 nav.nav-collapse {
   width: 100%;
   height: 70px;
-  display: block;
-  position: fixed;
+  color: $nav-bg;
+  span {
+    a {
+        text-decoration: none;
+        color: black;
+    }
+  }
+}
+
+.fixed {
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    z-index: 50
 }
 
 .main-container {
