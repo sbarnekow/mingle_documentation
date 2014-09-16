@@ -44,11 +44,15 @@ html, body {
 nav.nav-collapse {
   width: 100%;
   height: 70px;
-  color: $nav-bg;
+  background-color: $nav-bg;
   span {
     a {
+        text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
+        font-size: 17px;
+        letter-spacing: .25px;
+        font-weight: 300;
+        color: white;
         text-decoration: none;
-        color: black;
     }
   }
 }
@@ -85,7 +89,7 @@ nav.nav-collapse {
   overflow-x: hidden;
   position: fixed;
   z-index: 30;
-  top: 82px;
+  top: 70px;
   left: 0;
   bottom: 0;
   width: $nav-width;
