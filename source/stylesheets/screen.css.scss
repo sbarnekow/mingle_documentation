@@ -46,6 +46,7 @@ nav.nav-collapse {
   height: 70px;
   background-color: $nav-bg;
   span {
+    padding-left: 5em;
     a {
         text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
         font-size: 17px;
@@ -62,14 +63,9 @@ nav.nav-collapse {
     left:0;
     top:0;
     width:100%;
-    z-index: 50
+    z-index: 30
 }
 
-.main-container {
-  display: block;
-  width: 100%;
-  margin-top: 70px;
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////
