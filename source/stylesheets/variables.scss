@@ -75,6 +75,7 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 %header-font {
   @extend %default-font;
   font-weight: 300;
+  font-size: 25px;
   letter-spacing: 1px;
   &:hover { color: #c3c3c3 }
 }

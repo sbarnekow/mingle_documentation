@@ -45,27 +45,29 @@ nav.nav-collapse {
   width: 100%;
   height: 70px;
   background-color: $nav-bg;
-  span {
-    padding-left: 5em;
-    a {
-        text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
-        font-size: 17px;
-        letter-spacing: .25px;
-        font-weight: 300;
-        color: white;
-        text-decoration: none;
-    }
-  }
+  position:fixed;
+  margin-bottom: 10px;
+  width:100%;
+  z-index: 30
 }
 
-.fixed {
-    position:fixed;
-    left:0;
-    top:0;
-    width:100%;
-    z-index: 30
+
+#nav-element a {
+    text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
+    letter-spacing: 1px;
+    @extend %header-font;
+    color: white;
+    text-decoration: none;
 }
 
+
+/*
+helvetica neueu
+content is arial
+top one is helvetica neueu
+weight - thin, size 44 for side
+size 46 for top
+*/
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -541,7 +543,8 @@ nav.nav-collapse {
   }
 }
 
- .content#app {      
+ .content#app {  
+      padding-top: 70px; 
       &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
         margin-right: 0;
     }
@@ -554,9 +557,6 @@ nav.nav-collapse {
 // This is all the stuff that appears in the right half of the page
 
 .content {
-  
-  margin-top: 82px;
-
   pre, blockquote {
     background-color: $code-bg;
     color: #fff;
