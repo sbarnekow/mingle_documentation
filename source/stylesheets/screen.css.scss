@@ -41,23 +41,37 @@ html, body {
 // SARAHS ADDITIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-nav.nav-collapse {
+div.nav-collapse {
+  position:fixed;
   width: 100%;
   height: 70px;
+  z-index: 30;
   background-color: $nav-bg;
-  position:fixed;
-  margin-bottom: 10px;
-  width:100%;
-  z-index: 30
+  border: 1px solid green;
+  /*text-align: center;*/
 }
 
+#mingle-logo {
+  border: 1px solid pink;
+  display: inline-block;
+  img {
+    height: auto;
+  }
+}
 
-#nav-element a {
-    text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
-    letter-spacing: 1px;
+#nav-element {
+  display: inline-block;
+  border: 1px solid pink;
+  margin-left: 75px;
+  margin-bottom: 15px;
+  height: auto;
+  a { 
     @extend %header-font;
+    text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
+    letter-spacing: 1.5px;
     color: white;
     text-decoration: none;
+  }
 }
 
 
@@ -307,6 +321,7 @@ size 46 for top
     right: 0;
     top: 0;
     bottom: 0;
+    padding-top: 72px;
   }
 
   .lang-selector {
@@ -557,6 +572,7 @@ size 46 for top
 // This is all the stuff that appears in the right half of the page
 
 .content {
+  padding-top: 72px;
   pre, blockquote {
     background-color: $code-bg;
     color: #fff;
@@ -613,6 +629,7 @@ size 46 for top
   }
 
   .page-wrapper {
+    margin-top: 72px;
     margin-left: 0;
   }
 

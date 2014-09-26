@@ -43,12 +43,11 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>">
-    <a href="#" id="nav-button">
-      <span>
-        NAV
-        <%= image_tag('navbar.png') %>
-      </span>
-    </a>
+    <div class="nav-collapse">
+      <div id="mingle-logo"><img src="images/logo.png"></img></div>
+      <div id="nav-element"><a href="/app.html">Mingle</a></div>
+      <div id="nav-element"><a href="/api.html">Mingle's API</a></div>
+    </div>
     <div class="tocify-wrapper">
       <% if language_tabs %>
         <div class="lang-selector">
@@ -78,7 +77,6 @@ under the License.
       <% end %>
     </div>
     <div class="page-wrapper">
-      <div class="dark-box"></div>
       <div class="content">
         <%= yield %>
         <% current_page.data.includes && current_page.data.includes.each do |include| %>
