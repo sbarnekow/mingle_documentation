@@ -48,11 +48,12 @@ div.nav-collapse {
   z-index: 30;
   background-color: $nav-bg;
   border: 1px solid green;
-  /*text-align: center;*/
+  text-align: center;
 }
 
 #mingle-logo {
   display: inline-block;
+  float: left;
   img {
     height: auto;
   }
@@ -60,7 +61,9 @@ div.nav-collapse {
 
 #nav-element {
   display: inline-block;
+  float: left;
   margin-left: 75px;
+  margin-top: 15px;
   a { 
     @extend %header-font;
     text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
