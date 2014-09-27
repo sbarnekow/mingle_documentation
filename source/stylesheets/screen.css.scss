@@ -52,7 +52,6 @@ div.nav-collapse {
 }
 
 #mingle-logo {
-  border: 1px solid pink;
   display: inline-block;
   img {
     height: auto;
@@ -61,10 +60,7 @@ div.nav-collapse {
 
 #nav-element {
   display: inline-block;
-  border: 1px solid pink;
   margin-left: 75px;
-  margin-bottom: 15px;
-  height: auto;
   a { 
     @extend %header-font;
     text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
