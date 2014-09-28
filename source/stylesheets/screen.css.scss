@@ -85,7 +85,7 @@ size 46 for top
 .arrow-up { 
     z-index: 100;
     position: fixed;
-    margin-top: 50px;
+    margin-top: 45px;
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
@@ -344,7 +344,8 @@ div.arrow-up#api{
   .lang-selector {
     position: fixed;
     z-index: 50;
-    border-bottom: 5px solid $lang-select-active-bg;
+    margin-top: -2px;
+    /*border-bottom: 5px solid $lang-select-active-bg;*/
   }
 }
 
