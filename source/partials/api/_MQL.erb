@@ -1,2 +1,42 @@
+## Structure of the Execute MQL resulting resource
+
+```curl
+GET
+http://localhost:8080/api/v2/projects/new/cards/execute_mql.xml
+
+**Select Card Properties**
+mql=SELECT number, name WHERE 'Iteration - Scheduled' = (Current Iteration)
+
+**Value Query**
+mql=SELECT COUNT(*) WHERE Type = story
+```
+
+MQL is Mingle's SQL-like query language. Execute MQL API allows you to use MQL queries via the API.
+
+We recommend that you familiarize yourself with some MQL before using it via the API.
+
+Unlike other APIs the structure of what is returned in a result resource will differ depending on the MQL that is specified in the request. 
+
+The structure will reflect the properties requested in the MQL. For example, if you select for number and name, the results returned will have the attributes number and name.
+
+Results will be returned in XML format by default. However, Mingle can also return the result in JSON or JSONP format for some resources.
+
+
+
 ## JSON/JSONP/XML
-## execute_mql
+
+To return a JSON object, add the JSON extension to the end of the request, rather than the XML extension.
+
+```curl
+    **JSON** 
+    URL: /api/v2/projects/project_identifier/cards/execute_mql.json
+    
+    mql: SELECT number, name WHERE type = Story
+
+    **JSONP**
+    URL: /api/v2/projects/project_identifier/cards/execute_mql.json
+    
+    callback: displayCards
+    mql: SELECT number, name WHERE type = Story
+    
+```

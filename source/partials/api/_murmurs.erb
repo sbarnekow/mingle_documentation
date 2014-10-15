@@ -1,2 +1,78 @@
 ## Metadata
+
+murmurs resource xml - attributes
+
+`id` Integer; read only, the system generated id for a murmur. This id is globally unique.
+
+`author` Resource; details of the user who has created a murmur.
+
+`body` String; the content of a murmur
+
+`created_at` Datetime; read only, date and time of a murmur creation.
+
+`is_truncated` Boolean; indicates if the murmur body is truncated. If the body is truncated, you will need to request that specific murmur to see the full murmur body.
+
 ## Post a Murmur
+```curl
+POST
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/murmurs.xml
+
+murmur[body]="hello there"
+```
+
+This is an example of a POST to create a new murmur in a project with identifier "test_project". 
+
+## Get a List of Murmurs
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/murmurs.xml
+```
+
+You can list all murmurs that are posted to your projects. This is an example of a GET to list all murmurs in a project with identifier "test_project".
+
+
+## Get a Single Murmur
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/murmurs/71.xml
+```
+
+The above is an example of a GET to view a specific murmur with an id of 71 in a project with identifier "test_project". 
+
+## Get a List of Murmurs Associated with a Single Card
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/cards/1/murmurs.xml
+
+```
+
+Any murmurs that contain the 'card keyword + card number', e.g. story 1, #1, will appear on that cards' "Murmurs" section. This is an example of a GET to list all murmurs on a card with a card number of 1 in project with identifier "test_project". 
+
+## Get a List of Murmurs Before a Specific Murmur
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/murmurs.xml
+
+before_id=71
+```
+
+This is an example of a GET to list 25 murmurs in project with identifier "test_project" since the murmur with id 71.
+
+## Murmurs Channels
+
+Murmurs is a built-in feature in all projects and cannot be disabled. You can manage this channel settings via the Murmurs channels API.
+
+The structure of the murmurs channel resource, and its attributes are described below, along with their data type. Also included with each attribute is whether you are allowed to update the value.
+
+### Metadata
+
+`enabled` Boolean; represents whether a project has Murmurs enabled or not. Set this to true to enable Murmurs.
+
+`project` Resource; name and identifier of a project. Both Strings.
+
+
