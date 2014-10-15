@@ -1,66 +1,88 @@
 ## Introduction
-The event API provides programmatic access to Mingle historical data. This API is readonly.
-It has always been possible to subscribe to history in Mingle. However, those subscriptions are oriented toward human readability - generally in a feed reader. In comparison, the event API is oriented toward programmatic access. This programmatic orientation provides many benefits and possibilities for clients to integrate with and consume Mingle data. Potential usages of this API include:
-Aggregated feeds between Mingle projects or even other products
+The events API provides programmatic access to Mingle historical data. This API is readonly.
+It has always been possible to subscribe to history in Mingle. However, those subscriptions are oriented toward human readability - generally in a feed reader. In comparison, the events API is oriented toward programmatic access. 
+
+Potential usages of this API include:
+- Aggregated feeds between Mingle projects or even other products
 Custom filtered Mingle feeds
-Activity monitoring
-Integrating Mingle with other products
-Custom metrics analysis, such as cycle-time analysis and scope change analysis
+- Activity monitoring
+- Integrating Mingle with other products
+- Custom metrics analysis, such as cycle-time analysis and scope change analysis
+
 Structure of the event API
+
 The event API is an atom feed. As an atom feed, the event API is comprised of a feed root element with the feed attributes described below.
 
 ## Metadata 
+### Feed Resource 
 
+`title` String; The title of this feed.
 
-### Feed
-The event API is an atom feed. As an atom feed, the event API is comprised of a feed root element with the feed attributes described below.
+`id` String; The URL for this feed.
 
-title: String; The title of this feed.
-id: String; The URL for this feed.
-link: XML Element; There are several links associated with the feed. These provide information about the feed, in particular it provides information which allows you to navigate through the feed.
-updated: Datetime; The time that the last entry on this feed occurred.
-entry: Resource; The feed will contain one or more entry elements which describe the Mingle events in the feed. Details can be found in the Entries section on this page.
+`link` XML Element; There are several links associated with the feed. These provide information about the feed, in particular it provides information which allows you to navigate through the feed.
+
+`updated` Datetime; The time that the last entry on this feed occurred.
+
+`entry` Resource; The feed will contain one or more entry elements which describe the Mingle events in the feed. Details can be found in the Entries section on this page.
 
 ### Entries
-Entries are the core of the the API. Each entry represents one or more Mingle events. Entries are broadly one of the following: card, page, revision, or feed corrections . Although each type of event differ, all events have some common elements.
 
-entry resource xml - attributes
-id: String; Identifier of this entry.
-title: String; Friendly title for entry.
-updated: Datetime; The time that the last entry on this feed occurred.
-author: Resource; The user who caused this event. Revision events may only contain a name element, if the person who checked in is not associated with a Mingle user. If a Mingle user is known, the following elements may be present: name, email, uri, and mingle:icon.
-link: XML Element; Links associated with the entry. The link contains several attributes about the resource: href (link to resource), rel (definition of the resource), type (type of the resource, e.g., "text/html"), and title.
-category: XML Element; Categories associated with the entry. The category contains term and scheme attributes. Term identifies the types of changes that occurred in this entry, e.g., "property-change". There will be one category for each entry with a term of card, page, revision, or feed-correction. This defines the source of the entry.
-content: XML Element; Details about the changes that occurred in this entry. E.g., what property changed along with the old and new values. Content will contain a changes XML element which contains individual change elements.
+`id` String; Identifier of this entry.
 
-### Feed/Entries
+`title` String; Friendly title for entry.
+
+`updated` Datetime; The time that the last entry on this feed occurred.
+
+`author` Resource; The user who caused this event. Revision events may only contain a name element, if the person who checked in is not associated with a Mingle user. If a Mingle user is known, the following elements may be present: name, email, uri, and mingle:icon.
+
+`link` XML Element; Links associated with the entry. The link contains several attributes about the resource: href, rel, type, and title.
+
+`category` XML Element; Categories associated with the entry - two part, Term and Scheme. Term identifies the types of changes that occurred in this entry, e.g., "property-change". There will be one category for each entry with a term of card, page, revision, or feed-correction. This defines the source of the entry.
+
+`content` XML Element; Details about the changes that occurred in this entry. Content will contain a changes XML element which contains individual change elements.
+
 ### Cards
+
 ### Pages
+
 ### Objectives
+
 ### Revisions
+
 ### Feed Correction
+
 ## Feed Navigation
+
+There are four potential links on an event feed: current, self, next, and previous. The type of link is identified by the "rel" attribute.
+
+**current** represents the URL of the most recent events in this feed. The current link is always available and the link URL will not change.
+
+**self** represents the URL of the page for the has been requested. The self link is always available.
+next is a link to the next older set of events. The next link is available unless the current set of events are the oldest events in the project.
+
+**previous** is a link to the next newer set of events. The previous link is available unless the current set of events are the newest events in the project.
+
+If you do not specify any particular page, you will get the most recent events in the project.
+
 ## List of Events from a Project
 
 You can list the events that happened in your project.
 
 ```curl
-URL: /api/v2/projects/project_identifier/feeds/events.xml
+Request Method: GET
+http://yourname:password@your.mingle.server:8080/api/v2/projects/project_identifier/feeds/events.xml
 ```
 
 ## Get Objective Related Events from Planner
 
 You can get list of objective-related events that happened in your plan.
-Reference
-Request Method: GET
-URL: /api/v2/programs/program_identifier/plan/feeds/events.xml
-Parameters: NA
-Example
-GET
 
+```curl
+Request Method: GET
 http://yourname:password@your.mingle.server:8080/api/v2/programs/program_identifier/plan/feeds/events.xml
-   
-Explanation
-The above is an example of a GET to retrieve the most recent events in a plan from the program with identifier "test_program". The request is made with the authorization credentials of yourname/password.
+```
+
 Result
-If you were authorized to perform the operation, and the resource was available, you should get an xml document that looks something like the following. The URL of the objective to which the event occurred is also provided.
+
+If you were authorized to perform the operation, and the resource was available, you should get an xml document in which the URL of the objective to which the event occurred is also provided.

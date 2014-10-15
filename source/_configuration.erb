@@ -1,0 +1,18 @@
+# Configuration
+
+## Authentication
+
+### SaaS Customers
+For SaaS customers, the Mingle API supports HMAC authentication. 
+All API requests to SaaS are made over HTTPS and Mingle On-Site with SSL configured
+#### Generating your HMAC key
+
+Unlike basic authentication, HMAC authentication is user specific. Every user can generate one HMAC secret key from the profile page under the HMAC Auth Key tab.
+
+Please note that regenerating your HMAC key will invalidate your existing key.
+
+### On Site Customers 
+
+For On Site customers, the Mingle API supports basic authentication.
+#### Configuring basic authentication
+To enable basic authentication, set `basic_authentication_enabled: true` in ``<Mingle Data Directory>/config/auth_config.yml``

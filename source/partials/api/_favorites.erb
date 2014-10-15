@@ -1,2 +1,18 @@
+## Introduction
+The Favorites API allows users to access a list of all team favorites and tabs on a project. They can then use the Card API to get all cards for a specified team favorite.
+
 ## Metadata
+
+favorite resource xml - attributes
+
+`id` Integer; read only, system assigned unique identifier for this favorite.
+
+`name` String; user given name for this favorite.
+
+`project` Resource; name and identifier of the project for this favorite; both String.
+
+`favorited_type` String; read only, type of favorite, 'CardListView' or 'Page'.
+
+`tab_view` Boolean; the tab status indicator for this favorite.
+
 ## Get All Team Favorites
