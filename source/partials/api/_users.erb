@@ -1,7 +1,98 @@
 ## Metadata
+
+`id` Integer; read only, system assigned unique identifier for a user. Use this to get a identifier uniquely.
+
+`name` String.
+
+`login` String; the Mingle sign-in name for the user.
+
+`email` String.
+
+`light` Boolean; determines if the user is a Light user or not, default is false.
+
+`icon_path` String; may be blank if the user has no icon, may not be specified when creating or updating a user via the api.
+
+`activated` Boolean; determines if a user is activated in Mingle or not, default is true.
+
+`admin` Boolean; determines if a user is a Mingle Administrator or not, default is false.
+
+`version_control_user_name: String.
+
+`password` String; update only, this field is not provided on a GET of a user resource.
+
+`password_confirmation` String; update only, must be identical to password on an update, this field is not provided on a GET of a user resource.
+
 ## Get All Users
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/users.xml      
+```
+
+You have to have "Mingle Administrator" permissions to make this call.
+
 ## Get User By ID
-## Create A Users
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/users/42.xml
+```
+The request is made with the authorization credentials of yourname/password. The URL is the location of the user resource corresponding to the user with id 42.
+
+## Create A User
+```curl
+POST
+
+http://yourname:password@your.mingle.server:8080/api/v2/users.xml
+
+
+user[name]=John Smith
+user[login]=john
+user[email]=jsmith@example.com
+user[password]=t0ps3cr3t.
+user[password_confirmation]=t0ps3cr3t.
+user[version_control_user_name]=jsmith
+user[admin]=false
+user[light]=false
+```
+
+Posting the parameters creates a user with the specified values on the Mingle instance.
+
+If you have sufficient permissions to perform the action and the action was successful, you will be returned a location attribute in the header of the response, which is a url from which you can get the user resource that was created.
+
+You must have Mingle administrator privileges to make this call to the API.
+
 ## Update User by ID
+```curl
+PUT
+
+http://yourname:password@your.mingle.server:8080/api/v2/users/42.xml
+
+user[name]=John Smythe
+user[password]=t0ps53cr3t.
+user[password_confirmation]=t0p53cr3t.
+```
+
+The URL is the location the user resource for the user with id 42.
+
+If you have sufficient permissions to perform the action and the action was successful, then user with id will be updated to have a name of "John Smythe" and their password be "t0p53cr3t.". You will be returned a location attribute in the header of the response, which is a url from which you can get the user resource that was updated.
+
+You must have Mingle administrator privileges to make this call to the API.
+
 ## Structure of a Project Membership
+### Metadata
+`id` Integer; read only, system assigned unique identifier for a user.
+`admin` Boolean; determines if a user is a Mingle Administrator or not, default is false.
+`readonly_member` Boolean; shows whether a user is read-only on the project.
+`user` Resource; name and login of a user who is a member of this project; both String.
+`project` Resource; name and identifier of the project; both String.
+
 ## Get All Team Members
+```curl
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/users.xml
+```
+The URL is the location of all user resources for the project with identifier "test_project".
+
+The attributes activated, admin, and version_control_user_name will not be returned when the user attempting to obtain the team members is not a project or Mingle administrator.
