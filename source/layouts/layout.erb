@@ -43,12 +43,11 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>">
-    <div class="nav-collapse">
-       <a href="/app.html"><div id="mingle-logo"><img src="images/logo.png"></img></div></a>
-      <div id="nav-element"><a href="/app.html">Mingle</a></div>
-      <div id="nav-element"><a href="/api.html">Mingle's API</a></div>
-    </div>
-    <div class="arrow-up" id="api"></div>
+    <a href="/api.html" id="nav-button">
+      <span>
+        <%= image_tag('images/logo.png') %>
+      </span>
+    </a>
     <div class="tocify-wrapper">
       <% if language_tabs %>
         <div class="lang-selector">
