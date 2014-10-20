@@ -1,79 +1,115 @@
-The structure of a project resource, and its attributes are described below, along with their data type. Also included with each attribute is whether you are allowed to update the value. System generated fields like `created_at` are provided only as information about the project and cannot be updated through the API.
+The structure of a project resource and its attributes are described below. 
 
-But can it be deleted? 
+System generated fields such as `created_at` are provided only as information about the project and cannot be updated through the API.
 
-While projects cannot be directly deleted, it can be marked for deletion by setting `marked_for_deletion` to true in an update call. Mingle will then take care of deleting the resource.
+*But can it be deleted?* 
+
+While projects cannot be directly deleted, it can be marked for deletion by setting `marked_for_deletion` to true in an update call. 
+
+Mingle will then take care of deleting the resource.
 
 ## Metadata
 
-`name`: String
+`name` **String**
 
-`identifier`: String; this is used to lookup a project
+`identifier` **String**
 
-`description`: String
+`description` **String**
 
-`created_at`: Date Time; read only, date and time of creating project
+`created_at` **Datetime** *read only* date and time of creating project
 
-`updated_at`: Date Time; read only, date and time of last modification
+`updated_at` **Datetime** *read only* date and time of last modification
 
-`created_by`: Resource; the name and login of the user who created this project info; both String, read only
+`created_by` **Resource** *read only* the name and login of the user who created this project info; **both String**
 
-`modified_by`: Resource; the name and login of the user who is the last one modified the project info; both String, read only
+`modified_by` **Resource** *read only* the name and login of the user who is the last one modified the project info; **both String**
 
-`keywords`: XML element; card keywords which are used in this project 
-to reference to a card. Contains keyword XML elements, each of which is a string that is the card keyword. 
+`keywords` **XML element** card keywords which are used in this project to reference to a card. Contains keyword XML elements, each of which is a string that is the card keyword.
 
-Examples are shown below
 
-`template`: Boolean.
+	Examples are shown below
 
-`email_address`: String.
+	`template` **Boolean**
 
-`email_sender_name`: String.
+	`email_address` **String**
 
-`date_format`: String.
+	`email_sender_name` **String**
 
-`time_zone`: String; time zone location name, for example: 'Beijing', 
-'Pacific Time (US Attributes &  Canada)'.
+	`date_format`  **String**
 
-`precision`: Integer; [0, 10]
+	`time_zone` **String** time zone location name, for example: 'Beijing', 'Pacific Time (US Attributes &  Canada)'.
 
-`anonymous_accessible`: Boolean; whether the project allows anonymous 
-access or not.
+	`precision` **Integer** [0, 10]
 
-`auto_enroll_user_type`: String; whether the project will have all 
-users as team members. Users can be enrolled as full, readonly or nil.
+	`anonymous_accessible` **Boolean** whether the project allows anonymous access or not.
+
+	`auto_enroll_user_type` **String** whether the project will have all users as team members. Users can be enrolled as full, readonly or nil.
 
 ## Create a New Project
 
-```curl
+```shell
 POST
-https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects.xml
+
+project[name]="Test Project"
+project[identifier]="test_project"      
 ```
 
-`project[name]` **Required**
 
-`project[identifier]` **Required**
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
 
-`project[description]`
+URL = '<MINGLE RESOURCE URL>'
+PARAMS = { :project => { :name => "Test Project", :identifier => "test_project" }}
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
 
-`project[template]`
+def http_post(url, params, options={})
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+    body = params.to_json
 
-`project[email_address]`
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = body
 
-`project[email_sender_name]`
+    request['Content-Type'] = 'application/json'
+    request['Content-Length'] = body.bytesize
 
-`project[date_format]`
 
-`project[time_zone]`
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
 
-`project[precision]`
+    response = http.request(request)
+
+    if response.code.to_i > 300
+      raise UnexpectedResponseError, <<-ERROR
+      \nRequest URL: #{url}
+      Response: #{response.code} #{response.message}
+      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      ERROR
+  end
+end
+```
+
+Project name and project identifier are both required in order to create a new project via the Mingle Project API.
 
 ## Find All Projects
-
-```curl
+```shell
 GET
-https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects.xml  
+
 ```
 
 Making GET requests on /api/v2/projects.xml may cause performance issues in a Mingle installation with large number of projects. Please try and use the name_and_id_only parameter described below.
@@ -83,7 +119,7 @@ The above is an example of a GET request to a Mingle server running at your.ming
 
 ## Find All Project Names and Identifiers
 
-```curl
+```shell
 GET
 https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml?name_and_id_only
 ```
@@ -95,7 +131,7 @@ This is useful when you want to access the project name and identifier.
 
 ## Find a Single Project
 
-```curl
+```shell
 GET
 https://instance.mingle-api.thoughtworks.com/api/v2/projects/test_project.xml
 ```
