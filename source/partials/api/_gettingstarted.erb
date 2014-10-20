@@ -1,7 +1,11 @@
 ## Authentication
 You can authenticate to the Mingle API using HMAC authencatication.
 
-To get your HMAC key, go to your profile, accessible in the top right corner of your Mingle, and navigate to the tab titled “HMAC Auth Key” where you can use the “Generate” button to generate a new key. This will download a CSV titled “credentials.csv” to your machine which holds your HMAC username and key.  	
+To generate your HMAC key, go to your User Profile, accessible in the top right corner of your Mingle, and navigate to the tab titled “HMAC Auth Key” where you will see the “Generate” button. Using this button will generate a new HMAC key for your use. 
+
+This will download a CSV titled “credentials.csv” to your machine which holds your HMAC username and key.  	
+
+![HMAC Auth Key](/images/generate_HMAC.png)
 
 <aside class="notice">Please note that regenerating your HMAC key will invalidate your existing key.</aside>
 
@@ -9,50 +13,33 @@ To get your HMAC key, go to your profile, accessible in the top right corner of 
 
 Each Mingle object comes with standard metadata. 
 
-To illustrate a common use of Mingle’s API, Mingle’s standard card metadata is below : 
-
-### Form Data
-
-card[name] String
-    
-card[description] Text
-
-card[created_at] DateTime
-
-card[created_by] String
-
-card[type] String
-
-card[number] Integer
-
-card[properties] Array
-
+To illustrate this, Mingle’s standard card metadata can be found below in both XML and JSON formats : 
 
 ### XML Data
-
-```xml
-<card>
-	<name>2</name>
-	<description nil="true"></description>
-	<card_type>
-	<name>Iteration</name>
-	</card_type>
-	<number type="integer">10</number>
-	<properties type="array">
-		<property type_description="Automatically generated from the team list" hidden="false">
-		<name>Owner</name>
-		<value nil="true"></value>
-		</property>
-	</properties>
-	<tags>
-	</tags>
-</card>
-```
+&lt;card&gt;  
+&lt;name&gt;2&lt;/name&gt;   
+&lt;description nil="true"&gt;&lt;/description&gt;  
+&lt;card_type&gt;  
+&lt;name&gt;Iteration&lt;/name&gt;  
+&lt;/card_type&gt;  
+&lt;number type="integer"&gt;10&lt;/number&gt;  
+&lt;properties type="array"&gt;  
+&lt;property type_description="Automaticallgenerated from the team list" hidden="false"&gt;  
+&lt;name&gt;Owner&lt;/name&gt;  
+&lt;value nil="true"&gt;&lt;/value&gt;  
+&lt;/property&gt;  
+&lt;/properties&gt;  
+&lt;tags&gt;  
+&lt;/tags&gt;  
+&lt;/card&gt; 
 
 ### JSON Data
 
-{ :card => { :type => "story", :name => "Test Story" }}
+{ :card => { :type => "story", :name => "Test Story", :description => "This is a great description of Test Story!", :properties => { :name => "Status", :value => "Completed" } } }
 
+## cURL
+
+All resources are available via GET request but it is not recommended that users try to submit POST, PUT, or DELETE requests via cURL due to security concerns. 
 
 ## Ruby
 
@@ -60,8 +47,6 @@ The easiest way to authenticate with Ruby is to use the gem `api-auth`. To insta
 
 ## Javascript
 
-Mingle does not support cross-site scripting.  In order to use Javascript to access the API, you will need to run the code from within Mingle via a our Custom Macro Toolkit, or ported to Mingle. This is only available to On-Site customers.
+<aside class="notice"> Mingle does not support cross-site scripting. </aside> 
 
-## cURL
-
-All resources are available via GET request but it is not recommended that users try to submit POST, PUT, or DELETE requests via cURL due to security concerns. 
+In order to use Javascript to access the API, you will need to run the code from within Mingle via a our Custom Macro Toolkit, or ported to Mingle. This is only available to On-Site customers.
