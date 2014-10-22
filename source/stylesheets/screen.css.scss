@@ -38,70 +38,6 @@ html, body {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// SARAHS ADDITIONS
-////////////////////////////////////////////////////////////////////////////////
-
-div.nav-collapse {
-  position:fixed;
-  width: 100%;
-  height: 70px;
-  z-index: 30;
-  background-color: $nav-bg;
- /* border: 1px solid green;*/
-  text-align: center;
-}
-
-#mingle-logo {
-  display: inline-block;
-  float: left;
-  img {
-    height: auto;
-  }
-}
-
-#nav-element {
-  display: inline-block;
-  float: left;
-  margin-left: 75px;
-  margin-top: 15px;
-  a { 
-    @extend %header-font;
-    text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
-    letter-spacing: 1.5px;
-    color: white;
-    text-decoration: none;
-  }
-}
-
-
-/*
-helvetica neueu
-content is arial
-top one is helvetica neueu
-weight - thin, size 44 for side
-size 46 for top
-*/
-
-.arrow-up { 
-  z-index: 100;
-  position: fixed;
-  margin-top: 55px;
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid white;
-  color: pink;
-}
-div.arrow-up#app{
-    margin-left: 311px;
-}
-div.arrow-up#api{
-    margin-left: 500px;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -112,21 +48,37 @@ div.arrow-up#api{
   width: 20px;
 }
 
+/*@mixin embossed-bg {
+  @include background(
+    linear-gradient(top,
+                    rgba(#000, 0.2),
+                    rgba(#000, 0) 8px),
+    linear-gradient(bottom,
+                    rgba(#000, 0.2),
+                    rgba(#000, 0) 8px),
+    linear-gradient(top,
+                    rgba($nav-embossed-border-top, 1),
+                    rgba($nav-embossed-border-top, 0) 1.5px),
+    linear-gradient(bottom,
+                    rgba($nav-embossed-border-bottom, 1),
+                    rgba($nav-embossed-border-bottom, 0) 1.5px),
+    $nav-subitem-bg
+  );
+}*/
+
 .tocify-wrapper {
   @include transition(left ease-in-out 0.3s);
   overflow-y: auto;
   overflow-x: hidden;
   position: fixed;
   z-index: 30;
-  top: 70px;
+  top: 0;
   left: 0;
   bottom: 0;
   width: $nav-width;
   background-color: $nav-bg;
-  text-shadow: rgba(0, 0, 0, 0.7) 0 1px 0;
-  font-size: 17px;
-  letter-spacing: .25px;
-  font-weight: 300;
+  font-size: 13px;
+  font-weight: bold;
 
   // language selector for mobile devices
   .lang-selector {
@@ -139,9 +91,7 @@ div.arrow-up#api{
 
   // This is the logo at the top of the ToC
   &>img {
-    display: inline-block;
-    padding: 12px 20px;
-    height: 5%;
+    display: block;
   }
 
   &>.search {
@@ -187,7 +137,7 @@ div.arrow-up#api{
       margin-bottom: 1em;
     }
 
- /*   @include embossed-bg;*/
+    /*@include embossed-bg;*/
 
     li {
       margin: 1em $nav-padding;
@@ -241,16 +191,15 @@ div.arrow-up#api{
   // in the table of contents.
   .tocify-subheader {
     display: none; // tocify will override this when needed
-    /*background-color: $nav-subitem-bg;*/
-    font-weight: 300;
+    background-color: $nav-subitem-bg;
+    font-weight: 500;
     .tocify-item>a {
       padding-left: $nav-padding + $nav-indent;
-      font-size: 15px;
-      color: rgb(235, 236, 236);
+      font-size: 12px;
     }
 
     // for embossed look:
-  /*  @include embossed-bg;*/
+    /*@include embossed-bg;*/
     &>li:last-child {
       box-shadow: none; // otherwise it'll overflow out of the subheader
     }
@@ -338,14 +287,12 @@ div.arrow-up#api{
     right: 0;
     top: 0;
     bottom: 0;
-    padding-top: 72px;
   }
 
   .lang-selector {
     position: fixed;
     z-index: 50;
-    margin-top: -2px;
-    /*border-bottom: 5px solid $lang-select-active-bg;*/
+    border-bottom: 5px solid $lang-select-active-bg;
   }
 }
 
@@ -400,7 +347,7 @@ div.arrow-up#api{
     padding: 0 $main-padding;
     @include box-sizing(border-box);
     display: block;
-    @include text-shadow($main-embossed-text-shadow);
+    /*@include text-shadow($main-embossed-text-shadow);*/
 
     @extend %left-col;
   }
@@ -576,24 +523,16 @@ div.arrow-up#api{
   }
 }
 
- .content#app {  
-      padding-top: 70px; 
-      &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
-        margin-right: 0;
-    }
-  }
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // CODE SAMPLE STYLES
 ////////////////////////////////////////////////////////////////////////////////
 // This is all the stuff that appears in the right half of the page
 
 .content {
-  padding-top: 72px;
   pre, blockquote {
     background-color: $code-bg;
     color: #fff;
+
     padding: 2em $main-padding;
     margin: 0;
     width: $examples-width;
@@ -647,7 +586,6 @@ div.arrow-up#api{
   }
 
   .page-wrapper {
-    margin-top: 72px;
     margin-left: 0;
   }
 

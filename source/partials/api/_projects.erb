@@ -108,8 +108,52 @@ Project name and project identifier are both required in order to create a new p
 ```shell
 GET
 
-http://yourname:password@your.mingle.server:8080/api/v2/projects.xml  
+http://yourname:password@your.mingle.server:8080/api/v2/projects.xml
 
+```
+
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://your.mingle.server:8080/api/v2/projects.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_post(url, params, options={})
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+    body = params.to_json
+
+    request = Net::HTTP::GET.new(uri.request_uri)
+    request.body = body
+
+    request['Content-Type'] = 'application/json'
+    request['Content-Length'] = body.bytesize
+
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    if response.code.to_i > 300
+      raise UnexpectedResponseError, <<-ERROR
+      \nRequest URL: #{url}
+      Response: #{response.code} #{response.message}
+      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      ERROR
+  end
+end
 ```
 
 Making GET requests on /api/v2/projects.xml may cause performance issues in a Mingle installation with large number of projects. Please try and use the name_and_id_only parameter described below.
@@ -121,7 +165,8 @@ The above is an example of a GET request to a Mingle server running at your.ming
 
 ```shell
 GET
-https://instance.mingle-api.thoughtworks.com/api/v2/projects.xml?name_and_id_only
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects.xml?name_and_id_only
 ```
 
 The above request returns name and identifier for all project resources available on this instance. If you have "Mingle administrator" permissions, you will get all projects on that instance.
@@ -133,7 +178,8 @@ This is useful when you want to access the project name and identifier.
 
 ```shell
 GET
-https://instance.mingle-api.thoughtworks.com/api/v2/projects/test_project.xml
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project.xml
 ```
 
 The above is an example of a GET request to a Mingle server running at your.mingle.server, port 8080. The request locates a project with the identifier of "test_project". You have to either have "Mingle administrator" permissions, or be a member of the team to make this call
