@@ -26,24 +26,23 @@ Mingle will then take care of deleting the resource.
 
 `keywords` **XML element** card keywords which are used in this project to reference to a card. Contains keyword XML elements, each of which is a string that is the card keyword.
 
+Examples of keywords are as follows:  
 
-	Examples are shown below
+    - `template` **Boolean**
 
-	`template` **Boolean**
+    - `email_address` **String**
 
-	`email_address` **String**
+    - `email_sender_name` **String**
 
-	`email_sender_name` **String**
+    - `date_format`  **String**
 
-	`date_format`  **String**
+    - `time_zone` **String** time zone location name, for example: 'Beijing', 'Pacific Time (US Attributes &  Canada)'.
 
-	`time_zone` **String** time zone location name, for example: 'Beijing', 'Pacific Time (US Attributes &  Canada)'.
+    - `precision` **Integer** [0, 10]
 
-	`precision` **Integer** [0, 10]
+    - `anonymous_accessible` **Boolean** whether the project allows anonymous access or not.
 
-	`anonymous_accessible` **Boolean** whether the project allows anonymous access or not.
-
-	`auto_enroll_user_type` **String** whether the project will have all users as team members. Users can be enrolled as full, readonly or nil.
+    - `auto_enroll_user_type` **String** whether the project will have all users as team members. Users can be enrolled as full, readonly or nil.
 
 ## Create a New Project
 
@@ -56,7 +55,6 @@ project[name]="Test Project"
 project[identifier]="test_project"      
 ```
 
-
 ```ruby
 require 'net/http'
 require 'net/https'
@@ -64,9 +62,9 @@ require 'time'
 require 'api-auth'
 require 'json'
 
-URL = '<MINGLE RESOURCE URL>'
-PARAMS = { :project => { :name => "Test Project", :identifier => "test_project" }}
-OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml'
+OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
+PARAMS = { :project => { :name => 'Test Project', :identifier => 'test_project' }}
 
 def http_post(url, params, options={})
     uri = URI.parse(url)
@@ -100,16 +98,18 @@ def http_post(url, params, options={})
       ERROR
   end
 end
-```
 
-Project name and project identifier are both required in order to create a new project via the Mingle Project API.
+http_post(URL, PARAMS, OPTIONS)
+```
+<aside class="notice"> Mingle Admin permissions are required to make calls to this API. </aside>
+
+Project `name` and `project_identifier` are both required in order to create a new project via the Mingle Project API.
 
 ## Find All Projects
 ```shell
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects.xml
-
 ```
 
 ```ruby
@@ -119,25 +119,22 @@ require 'time'
 require 'api-auth'
 require 'json'
 
-URL = 'https://your.mingle.server:8080/api/v2/projects.xml'
-OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml'
+OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
 
-def http_post(url, params, options={})
+def http_get(url, options={})
     uri = URI.parse(url)
+    
     http = Net::HTTP.new(uri.host, uri.port)
+    
     if uri.scheme == 'https'
       http.use_ssl = true
       if options[:skip_ssl_verify]
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
     end
-    body = params.to_json
 
-    request = Net::HTTP::GET.new(uri.request_uri)
-    request.body = body
-
-    request['Content-Type'] = 'application/json'
-    request['Content-Length'] = body.bytesize
+    request = Net::HTTP::Get.new(uri.request_uri)
 
 
     if options[:access_key_id]
@@ -145,6 +142,8 @@ def http_post(url, params, options={})
     end
 
     response = http.request(request)
+
+    all_projects = response.body
 
     if response.code.to_i > 300
       raise UnexpectedResponseError, <<-ERROR
@@ -154,25 +153,73 @@ def http_post(url, params, options={})
       ERROR
   end
 end
+
+http_get(URL, OPTIONS)
 ```
 
-Making GET requests on /api/v2/projects.xml may cause performance issues in a Mingle installation with large number of projects. Please try and use the name_and_id_only parameter described below.
+The above is an example of a GET request to a Mingle server. The request locates all project resources available on this instance. 
+
+<aside class="notice"> If you are a Mingle Admin you will get a list of all projects on that instance. If not, you will get a list of all projects that you are a member of. 
 
 
-The above is an example of a GET request to a Mingle server running at your.mingle.server, port 8080. The request locates all project resources available on this instance. If you have "Mingle administrator" permissions, you will get all projects on that instance. If not, you will get a list of all projects that you are a member of.
+Making GET requests on `/api/v2/projects.xml` may cause performance issues in a Mingle installation with large number of projects. Please try and use the `name_and_id_only` parameter described in the next section.
+</aside>
 
 ## Find All Project Names and Identifiers
-
 ```shell
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects.xml?name_and_id_only
 ```
 
-The above request returns name and identifier for all project resources available on this instance. If you have "Mingle administrator" permissions, you will get all projects on that instance.
-If not, you will get a list of all projects that you are a member of.
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
 
-This is useful when you want to access the project name and identifier.
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml?name_and_id_only'
+OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
+
+def http_get(url, options={})
+    uri = URI.parse(url)
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    all_projects = response.body
+
+    if response.code.to_i > 300
+      raise UnexpectedResponseError, <<-ERROR
+      \nRequest URL: #{url}
+      Response: #{response.code} #{response.message}
+      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      ERROR
+  end
+end
+
+http_get(URL, OPTIONS)
+```
+
+This request returns name and identifier for all project resources available on this instance.
+
+<aside class="notice"> If you are a Mingle Admin you will get a list of all projects on that instance. If not, you will get a list of all projects that you are a member of. </aside>
 
 ## Find a Single Project
 
@@ -182,7 +229,53 @@ GET
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project.xml
 ```
 
-The above is an example of a GET request to a Mingle server running at your.mingle.server, port 8080. The request locates a project with the identifier of "test_project". You have to either have "Mingle administrator" permissions, or be a member of the team to make this call
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
 
-If you have sufficient permissions to perform the action and the action was successful, you will be returned a location attribute in the header of the response, which is a url from which you can get the project resource that was created.
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project.xml'
+OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
+
+def http_get(url, options={})
+    uri = URI.parse(url)
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    project = response.body
+
+    if response.code.to_i > 300
+      raise UnexpectedResponseError, <<-ERROR
+      \nRequest URL: #{url}
+      Response: #{response.code} #{response.message}
+      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      ERROR
+  end
+end
+
+http_get(URL, OPTIONS)
+```
+
+<aside class="notice"> You have to either have "Mingle administrator" permissions, or be a member of the team to make this call. </aside>
+
+This GET request locates a project with the identifier of "test_project".
+
 
