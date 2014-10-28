@@ -32,6 +32,15 @@ Data type will depend on the property while property name is always **String**. 
 `rendered_description` **Resource** Link to rendered card description as HTML.
 
 ## Create a New Card
+```shell
+POST
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/cards.xml
+
+card[name]="Test Story Card"
+card[type]="Story"  
+```
+
 ```ruby
 require 'net/http'
 require 'net/https'
@@ -39,7 +48,7 @@ require 'time'
 require 'api-auth'
 require 'json'
 
-URL = '<MINGLE RESOURCE URL>'
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project/cards.xml'
 PARAMS = { :card => { :type => "Story", :name => "Test Story Card" }}
 OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
 
@@ -75,25 +84,28 @@ def http_post(url, params, options={})
       ERROR
   end
 end
+
+puts http_post(URL, PARAMS, OPTIONS)
 ```
 
-```shell
-curl -x POST -D 'card[name]=Test Story Card card[type]=Story' <MINGLE RESOURCE URL>
-```
+To create a new card send a POST request with two required parameters card type and card name. 
 
-To create a new card, you can send a POST request with two necessary parameters - card type and name. 
-
-`card[name]` **Required** 
-
-`card[type]` **Required** 
-
-`card[description]`
-
-`card[properties][][name]` 
-
-`card[properties][][value]`
 
 ## Find a Set of Cards
+```shell
+GET
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/cards.xml
+
+filters[]=[Type][is][story]
+filters[]=[Status][is not][accepted]
+sort=status
+order=ASC
+```
+
+```ruby
+
+```
 
 `view` The name of a saved view, whose cards are to be returned back
 
@@ -109,44 +121,12 @@ not supplied, the default value is "1".
 
 `tagged_with` A comma separated list of tags that will be used to further filter the list of cards in addition to the filters
 
-**Example**
-
-`filters[]=[Type][is][story]`
-
-`filters[]=[Status][is not][accepted]`
-
-`sort=status`
-
-`order=ASC`
-
-
-```javascript
-  function getCardsXml (){
-      $j.ajax({
-      url: 'https://sarah.mingle.thoughtworks.com/api/v2/projects/clix/cards.xml',
-      data: null,
-      success: function(data, textStatus, jqXHR) {
-        console.log("Response: " + data.responseText);
-        console.log("Success!!!!");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log(":'-(");
-        console.log("Response: " + jqXHR.responseText);
-        console.log("HTTP stats: " + textStatus);
-        console.log("error: " + errorThrown);
-      },
-      complete: function(jqXHR, textStatus) {
-        console.log("Complete");
-        console.log(textStatus);
-    }
-    });
-  };       
-```
 
 ## Find a Single Card
-
 ```curl
-https://instance.mingle.thoughtworks.com/api/v2/project/test/1.xml
+GET 
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/cards/1.xml
 ```
 
 You can find a single card by submitting a GET request to the card's API url 
