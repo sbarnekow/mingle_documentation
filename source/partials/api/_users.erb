@@ -23,7 +23,7 @@
 `password_confirmation` String; update only, must be identical to password on an update, this field is not provided on a GET of a user resource.
 
 ## Get All Users
-```curl
+```shell
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/users.xml      
@@ -32,7 +32,7 @@ http://yourname:password@your.mingle.server:8080/api/v2/users.xml
 You have to have "Mingle Administrator" permissions to make this call.
 
 ## Get User By ID
-```curl
+```shell
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/users/42.xml
@@ -40,7 +40,7 @@ http://yourname:password@your.mingle.server:8080/api/v2/users/42.xml
 The request is made with the authorization credentials of yourname/password. The URL is the location of the user resource corresponding to the user with id 42.
 
 ## Create A User
-```curl
+```shell
 POST
 
 http://yourname:password@your.mingle.server:8080/api/v2/users.xml
@@ -63,7 +63,7 @@ If you have sufficient permissions to perform the action and the action was succ
 You must have Mingle administrator privileges to make this call to the API.
 
 ## Update User by ID
-```curl
+```shell
 PUT
 
 http://yourname:password@your.mingle.server:8080/api/v2/users/42.xml
@@ -88,7 +88,7 @@ You must have Mingle administrator privileges to make this call to the API.
 `project` Resource; name and identifier of the project; both String.
 
 ## Get All Team Members
-```curl
+```shell
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/users.xml
