@@ -89,10 +89,12 @@ def http_post(url, params, options={})
     response = http.request(request)
 
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
@@ -144,10 +146,12 @@ def http_get(url, options={})
     all_projects = response.body
 
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
@@ -203,11 +207,14 @@ def http_get(url, options={})
 
     all_projects = response.body
 
+    
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
@@ -259,11 +266,14 @@ def http_get(url, options={})
 
     project = response.body
 
+    
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end

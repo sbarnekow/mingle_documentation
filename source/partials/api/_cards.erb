@@ -49,8 +49,13 @@ require 'api-auth'
 require 'json'
 
 URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project/cards.xml'
-PARAMS = { :card => { :type => "Story", :name => "Test Story Card" }}
 OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+PARAMS = { 
+  :card => { 
+    :type => "Story", 
+    :name => "Test Story Card"
+  }
+}
 
 def http_post(url, params, options={})
     uri = URI.parse(url)
@@ -77,11 +82,14 @@ def http_post(url, params, options={})
 
     response = http.request(request)
 
+   
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
@@ -141,10 +149,12 @@ def http_get(url, params, options={})
     puts cards
 
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
@@ -210,10 +220,12 @@ def http_get(url, options={})
     puts card
 
     if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
@@ -243,9 +255,13 @@ require 'time'
 require 'api-auth'
 require 'json'
 
-URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project/cards.xml'
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects/test_project/cards.xml'
 OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
-PARAMS = {:card => {:name => "Lets update the title of this card!"} }
+PARAMS = {
+  :card => {
+    :name => "Lets update the title of this card!"
+  } 
+}
 
 def http_post(url, params, options={})
     uri = URI.parse(url)
@@ -271,11 +287,14 @@ def http_post(url, params, options={})
 
     response = http.request(request)
 
-    if response.code.to_i > 300
-      raise UnexpectedResponseError, <<-ERROR
-      \nRequest URL: #{url}
-      Response: #{response.code} #{response.message}
-      Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}"
+    
+   if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
       ERROR
   end
 end
