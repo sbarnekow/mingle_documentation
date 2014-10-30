@@ -1,13 +1,14 @@
 ## Metadata 
 
-`id`: Integer; read only, system assigned unique identifier for a property definition.
+`id` **Integer** *read only* system assigned unique identifier for a property definition.
 
-`name`: String; this is the name of the property definition.
+`name` **String** this is the name of the property definition.
 
-`description`: String.
+`description` **String**
 
-`data_type`: String; this field determine what data type of the property definition. Below shows what each value means. You can use following values 
-when creating a new card property.
+`data_type` **String** this field determine what data type of the property definition. 
+
+Below shows what each value means. You can use following values when creating a new card property.
 
 `string` - text property
 
@@ -21,48 +22,112 @@ when creating a new card property.
 
 `card` - card property
 
-`is_numeric` : Boolean; determines if the property definition is a numeric property. Only Managed/Unmanaged numeric properties have this set to true.
+`is_numeric` **Boolean** determines if the property definition is a numeric property. Only Managed/Unmanaged numeric properties have this set to true.
 
-`hidden` : Boolean; determines if team members can see the property in the card anywhere other than in MQL reports.
+`hidden` **Boolean** determines if team members can see the property in the card anywhere other than in MQL reports.
 
-`restricted` : Boolean; determines if a managed property definition can have any more values added to it through card show/edit pages. This corresponds to 'locked' in the Mingle card properties page.
+`restricted` **Boolean** determines if a managed property definition can have any more values added to it through card show/edit pages. This corresponds to 'locked' in the Mingle card properties page.
 
-`transition_only` : Boolean; this determines if the property can be updated directly or only through a transition.
+`transition_only` **Boolean** this determines if the property can be updated directly or only through a transition.
 
-`project` : Resource; name and identifier of a project this property belongs to; both String, readonly.
+`project` **Resource** name and identifier of a project this property belongs to; both **String** *readonly*
 
-`column_name` : String; read only, this field is the name of the database column that the property definition creates in the cards table of the project. These column names determine the attributes in a card resource for this project.
+`column_name` **String** *read only* the name of the database column that the property definition creates in the cards table of the project. *These column names determine the attributes in a card resource for this project.*
 
-`position` : Integer; read only, indicates the level of this property in a tree. e.g. 1 indicates this property exist in a 1 level tree relationship 
-property which connects the first and the second card type in tree.
+`position` **Integer** *read only* indicates the level of this property in a tree. e.g. 1 indicates this property exist in a 1 level tree relationship property which connects the first and the second card type in tree.
 
-`property_values_description` : Resource; read only, indicates the property type such as 'Managed text list', 'Managed number list', 'Automatically 
-generated from the team list', 'Formula' or 'Any card'.
+`property_values_description` **Resource** *read only* indicates the property type such as 'Managed text list', 'Managed number list', 'Automatically generated from the team list', 'Formula' or 'Any card'.
 
-`card_types` : Array; list all the card types this property is available to.
+`card_types` **Array** list all the card types this property is available to.
 
-`property_value_details` : Array; read only, list all the values for this card property. This attribute is only available for 'Managed text list' or 
-'Managed number list' type of card property.
+`property_value_details` **Array** *read only* list all the values for this card property. This attribute is only available for 'Managed text list' or 'Managed number list' type of card property.
 
-`is_managed` : Boolean; this field determine whether this property is "Managed list" or "Any". This is a required attribute when creating a text or a 
-numeric card property.
+`is_managed` **Boolean** this field determine whether this property is "Managed list" or "Any". This is a required attribute when creating a text or a numeric card property.
 
-`formula` : String; the property formula. This attribute is only available and required when creating a formula type of card property.
+`formula` **String** the property formula. This attribute is only available and required when creating a formula type of card property.
 
-`null_is_zero` : Boolean; whether or not to replace numeric (not set) values with zero when calculating the formula result. This attribute is only available when creating a formula type of card property.
+`null_is_zero` **Boolean** whether or not to replace numeric (not set) values with zero when calculating the formula result. This attribute is only available when creating a formula type of card property.
 
 Formula property 
 
-property_definition[data_type]=formula
-property_definition[formula]=size * 1
-property_definition[null_is_zero]=true
+`property_definition[data_type]=formula`
+
+`property_definition[formula]=size * 1`
+
+`property_definition[null_is_zero]=true`
 
 
 ## Create a Card Property
-
 ```shell
-https://instance.mingle-api.thoughtworks.com/api/v2/projects/project_identifier/property_definitions.xml
+POST
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/property_definitions.xml
+
+
+property_definition[name]=Status
+property_definition[data_type]=String
+property_definition[is_managed]=true
+property_definition[card_types][][name]=Story
 ```
+
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project/property_definitions.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+PARAMS = {
+  :property_definition => {
+    :name => 'Story Status',
+    :data_type => 'String',
+    :is_managed => 'true',
+    :card_types => [{name: 'Story'}]
+  }
+}
+
+def http_post(url, params, options={})
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+
+    body = params.to_json
+
+    puts body
+    
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = body
+
+    request['Content-Type'] = 'application/json'
+    request['Content-Length'] = body.bytesize
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      puts Request URL: #{url}
+      puts Response: #{response.code}
+      puts #{response.message}
+      puts Response Headers: #{response.to_hash.inspect}\nResponse Body: #{response.body}
+      ERROR
+  end
+end
+
+puts http_post(URL, PARAMS, OPTIONS)
+```
+In order to create a card property, the following data points are required. 
 
 `property_definition[name]` String **Required**
 
@@ -79,10 +144,59 @@ https://instance.mingle-api.thoughtworks.com/api/v2/projects/project_identifier/
 `property_definition[card_types][][name]` String
 
 ## Get Property Definitions for a Project
-
 ```shell
 GET
-https://instance.mingle-api.thoughtworks.com/api/v2/projects/project_identifier/property_definitions.xml
+
+http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/property_definitions.xml
+```
+
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project/property_definitions.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+    uri = URI.parse(url)
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    all_projects = response.body
+
+    puts all_projects
+
+     if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
+      ERROR
+  end
+end
+
+http_get(URL, OPTIONS)
 ```
 
 Performing a GET request on the `/api/v2/projects/test_project/property_definitions.xml` represents the listing of all property definition resources for the project with identifier `test_project`.

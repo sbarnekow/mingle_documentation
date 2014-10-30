@@ -61,6 +61,7 @@ def http_post(url, params, options={})
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
     end
+    
     body = params.to_json
 
     request = Net::HTTP::Post.new(uri.request_uri)
