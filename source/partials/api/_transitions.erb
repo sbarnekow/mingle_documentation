@@ -1,4 +1,32 @@
 ## Metadata
+`id` **Integer** *read only* the system generated id for a transition.
+
+`name` **String**
+
+`require_murmur` **Boolean** indicates whether a murmur is required to execute this transition.
+
+`transition_execution_url` **String** URL to execute this transition
+
+`user_input_required` **Array** all of the required property's attributes.
+
+`user_input_optional` **Array** all of the optionally required property's attributes.
+
+`if_card_has_properties` **Array** all properties which are required to have a specific value for the transition to be executed, along with the value.
+
+`if_card_has_properties_set` **Array** all properties which are required to be "(not set)" for the transition to be executed.
+
+`will_set_card_properties` **Array** returns all properties which will be set to a specific value when the transition is executed, along with the value.
+
+`only_available_for_users` **Array** all users for which this transition will be available. If `only_available_for_users` and `only_available_for_groups` are both missing, the transition is available for all team members.
+
+`only_available_for_groups` **Array** all user groups for which this transition will be available. If `only_available_for_users` and `only_available_for_groups` are both missing, the transition is available for all team members.
+
+`card_type` **String** card type associated with this transition. If missing, the transition can be executed against any card type.
+
+`to_remove_from_trees_with_children` **Array** all trees which the card and its children will be removed from when the transition is executed.
+
+`to_remove_from_trees_without_children` **Array** all trees which the card will be removed from when the transition is executed.
+
 ## Get Executable Transitions
 ## Get All Transitions for a Project
 ## Execute a Transition
