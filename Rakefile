@@ -1,6 +1,6 @@
-require 'middleman-gh-pages'
+# require 'middleman-gh-pages'
 
-task :default => [:build]
+# task :default => [:build]
 
 namespace :assets do
 	task :precompile do
