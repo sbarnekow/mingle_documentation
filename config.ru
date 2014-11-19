@@ -10,7 +10,7 @@ module Rack
   class TryStatic
     def initialize(app, options)
       @app = app
-      @try = ['', *options.delete(:try)]
+      @try = ['/api.html', *options.delete(:try)]
       @static = ::Rack::Static.new(lambda { [404, {}, []] }, options)
     end
 
