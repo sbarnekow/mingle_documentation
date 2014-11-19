@@ -4,6 +4,6 @@
 
 namespace :assets do
 	task :precompile do
-	    sh "middleman server"
+	    sh "middleman build"
 	end
 end
