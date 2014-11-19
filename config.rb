@@ -20,8 +20,8 @@ activate :syntax
 # set :partials_dir, 'partials'
 
 # This is needed for Github pages, since they're hosted on a subdomain
-activate :relative_assets
-set :relative_links, true
+# activate :relative_assets
+# set :relative_links, true
 
 # Build-specific configuration
 configure :build do
