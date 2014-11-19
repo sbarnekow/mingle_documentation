@@ -1,17 +1,21 @@
 ## Introduction
-The events API provides programmatic access to Mingle historical data. This API is readonly.
-It has always been possible to subscribe to history in Mingle. However, those subscriptions are oriented toward human readability - generally in a feed reader. In comparison, the events API is oriented toward programmatic access. 
+The events API provides programmatic access to Mingle historical data. This API is **readonly** and it is oriented toward programmatic access. 
 
 Potential usages of this API include:
+
 - Aggregated feeds between Mingle projects or even other products
-Custom filtered Mingle feeds
+
+- Custom filtered Mingle feeds
+
 - Activity monitoring
+
 - Integrating Mingle with other products
+
 - Custom metrics analysis, such as cycle-time analysis and scope change analysis
 
-Structure of the event API
+### Structure of the event API
 
-The event API is an atom feed. As an atom feed, the event API is comprised of a feed root element with the feed attributes described below.
+The event API is an atom feed. As an atom feed, it is comprised of a feed root element with the feed attributes described below.
 
 ## Metadata 
 ### Feed Resource 
@@ -44,45 +48,176 @@ The event API is an atom feed. As an atom feed, the event API is comprised of a 
 
 ### Cards
 
+Card events are entries which have a category with a term value of "card"; other categories may also be present. Card events can have the following types of changes.
+
 ### Pages
+
+Page events are entries which have a category with a term value of "page"; other categories may also be present. Page events can have the following types of changes.
 
 ### Objectives
 
+Plan objective events are entries that have a category with a term value of “objective”; other categories may also be present. Objective events can have the change types below. See related documentation on our objective API and how to get a list of objective-related events from your plan.
+
 ### Revisions
+
+Revision events are entries which have a category with a term value of "revision"; other categories may also be present. Revision events have the following type of change.
 
 ### Feed Correction
 
+Feed correction events are entries which have a category with a term value of "feed-correction"; other categories may also be present. Feed correction events generally represent changes to the structure of your project which affect previous feed entries. For example, previous entries could have shown that cards were tagged with "developer review". If the "developer review" tag is renamed to "need developer help" then the previous entries will change to show that those cards are tagged with "need developer help." Depending on how you are using this API, you may or may not be interested in feed corrections. Feed correction events can have the following types of changes.
+
 ## Feed Navigation
+
+HOW MANY PAGES ARE THERE??!!
 
 There are four potential links on an event feed: current, self, next, and previous. The type of link is identified by the "rel" attribute.
 
 **current** represents the URL of the most recent events in this feed. The current link is always available and the link URL will not change.
 
-**self** represents the URL of the page for the has been requested. The self link is always available.
-next is a link to the next older set of events. The next link is available unless the current set of events are the oldest events in the project.
+**self** represents the URL of the page for the has been requested. The self link is always available.next is a link to the next older set of events. The next link is available unless the current set of events are the oldest events in the project.
 
 **previous** is a link to the next newer set of events. The previous link is available unless the current set of events are the newest events in the project.
 
+If you do not specify any particular page, you will get the most recent events in the project - represented here by page 3. 
+
+On page 3, you will have the following links:
+
+
+<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml" rel="current"/>
+<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml" rel="self"/>
+<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml?page=2" rel="next"/>
+
+
+On page 2, you will have the following links:
+
+	<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml" rel="current"/>
+	<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml?page=2" rel="self"/>
+	<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml?page=1" rel="next"/>
+	<link href="http://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml?page=3" rel="previous"/>
+
+Lastly, on page 1, you will have the following links:
+
+	<link href="https://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml" rel="current"/>
+	<link href="https://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml?page=1" rel="self"/>
+	<link href="https://your_mingle_server.com/api/v2/projects/your_project/feeds/events.xml?page=2" rel="previous"/>
+
 If you do not specify any particular page, you will get the most recent events in the project.
 
-## List of Events from a Project
+On page three, you will find the most recent events. 
 
-You can list the events that happened in your project.
+## List of Events from a Project
 
 ```shell
 Request Method: GET
 http://yourname:password@your.mingle.server:8080/api/v2/projects/project_identifier/feeds/events.xml
 ```
 
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects/test_project/feeds/events.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+    uri = URI.parse(url)
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    all_events = response.body
+
+    puts all_events
+
+     if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
+      ERROR
+  end
+end
+
+http_get(URL, OPTIONS)
+```
+You can list the events that happened in your project.
+
 ## Get Objective Related Events from Planner
-
-You can get list of objective-related events that happened in your plan.
-
 ```shell
-Request Method: GET
+GET
+
 http://yourname:password@your.mingle.server:8080/api/v2/programs/program_identifier/plan/feeds/events.xml
 ```
 
-Result
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/program_identifier/plan/feeds/events.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+    uri = URI.parse(url)
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    
+    if uri.scheme == 'https'
+      http.use_ssl = true
+      if options[:skip_ssl_verify]
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+    end
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    if options[:access_key_id]
+      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+    end
+
+    response = http.request(request)
+
+    all_events = response.body
+
+    puts events
+
+     if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
+      ERROR
+  end
+end
+
+http_get(URL, OPTIONS)
+```
+
+You can get list of objective-related events that happened in your plan.
+
+### Result
 
 If you were authorized to perform the operation, and the resource was available, you should get an xml document in which the URL of the objective to which the event occurred is also provided.
