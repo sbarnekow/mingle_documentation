@@ -53,54 +53,6 @@ project[name]="Test Project"
 project[identifier]="test_project"      
 ```
 
-```ruby
-require 'net/http'
-require 'net/https'
-require 'time'
-require 'api-auth'
-require 'json'
-
-URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml'
-OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
-PARAMS = { :project => { :name => 'Test Project', :identifier => 'test_project' }}
-
-def http_post(url, params, options={})
-    uri = URI.parse(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    if uri.scheme == 'https'
-      http.use_ssl = true
-      if options[:skip_ssl_verify]
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-    end
-    body = params.to_json
-
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.body = body
-
-    request['Content-Type'] = 'application/json'
-    request['Content-Length'] = body.bytesize
-
-
-    if options[:access_key_id]
-      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
-    end
-
-    response = http.request(request)
-
-    if response.code.to_i > 300
-      raise StandardError, <<-ERROR
-      Request URL: #{url}
-      Response: #{response.code}
-      Response Message: #{response.message}
-      Response Headers: #{response.to_hash.inspect}
-      Response Body: #{response.body}
-      ERROR
-  end
-end
-
-http_post(URL, PARAMS, OPTIONS)
-```
 <aside class="notice"> Mingle Admin permissions are required to make calls to this API. </aside>
 
 Project `name` and `project_identifier` are both required in order to create a new project via the Mingle Project API.
@@ -111,54 +63,6 @@ GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects.xml
 ```
-
-```ruby
-require 'net/http'
-require 'net/https'
-require 'time'
-require 'api-auth'
-require 'json'
-
-URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml'
-OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
-
-def http_get(url, options={})
-    uri = URI.parse(url)
-    
-    http = Net::HTTP.new(uri.host, uri.port)
-    
-    if uri.scheme == 'https'
-      http.use_ssl = true
-      if options[:skip_ssl_verify]
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-    end
-
-    request = Net::HTTP::Get.new(uri.request_uri)
-
-
-    if options[:access_key_id]
-      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
-    end
-
-    response = http.request(request)
-
-    all_projects = response.body
-
-    if response.code.to_i > 300
-      raise StandardError, <<-ERROR
-      Request URL: #{url}
-      Response: #{response.code}
-      Response Message: #{response.message}
-      Response Headers: #{response.to_hash.inspect}
-      Response Body: #{response.body}
-      ERROR
-  end
-end
-
-http_get(URL, OPTIONS)
-```
-
 The above is an example of a GET request to a Mingle server. The request locates all project resources available on this instance. 
 
 <aside class="notice"> If you are a Mingle Admin you will get a list of all projects on that instance. If not, you will get a list of all projects that you are a member of. 
@@ -174,54 +78,6 @@ GET
 http://yourname:password@your.mingle.server:8080/api/v2/projects.xml?name_and_id_only
 ```
 
-```ruby
-require 'net/http'
-require 'net/https'
-require 'time'
-require 'api-auth'
-require 'json'
-
-URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml?name_and_id_only'
-OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
-
-def http_get(url, options={})
-    uri = URI.parse(url)
-    
-    http = Net::HTTP.new(uri.host, uri.port)
-    
-    if uri.scheme == 'https'
-      http.use_ssl = true
-      if options[:skip_ssl_verify]
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-    end
-
-    request = Net::HTTP::Get.new(uri.request_uri)
-
-
-    if options[:access_key_id]
-      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
-    end
-
-    response = http.request(request)
-
-    all_projects = response.body
-
-    
-    if response.code.to_i > 300
-      raise StandardError, <<-ERROR
-      Request URL: #{url}
-      Response: #{response.code}
-      Response Message: #{response.message}
-      Response Headers: #{response.to_hash.inspect}
-      Response Body: #{response.body}
-      ERROR
-  end
-end
-
-http_get(URL, OPTIONS)
-```
-
 This request returns name and identifier for all project resources available on this instance.
 
 <aside class="notice"> If you are a Mingle Admin you will get a list of all projects on that instance. If not, you will get a list of all projects that you are a member of. </aside>
@@ -231,54 +87,6 @@ This request returns name and identifier for all project resources available on 
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project.xml
-```
-
-```ruby
-require 'net/http'
-require 'net/https'
-require 'time'
-require 'api-auth'
-require 'json'
-
-URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects.xml/test_project.xml'
-OPTIONS = {:access_key_id => '<HMAC access_key_id>', :access_secret_key => '<HMAC secret_access_key>'}
-
-def http_get(url, options={})
-    uri = URI.parse(url)
-    
-    http = Net::HTTP.new(uri.host, uri.port)
-    
-    if uri.scheme == 'https'
-      http.use_ssl = true
-      if options[:skip_ssl_verify]
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-    end
-
-    request = Net::HTTP::Get.new(uri.request_uri)
-
-
-    if options[:access_key_id]
-      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
-    end
-
-    response = http.request(request)
-
-    project = response.body
-
-    
-    if response.code.to_i > 300
-      raise StandardError, <<-ERROR
-      Request URL: #{url}
-      Response: #{response.code}
-      Response Message: #{response.message}
-      Response Headers: #{response.to_hash.inspect}
-      Response Body: #{response.body}
-      ERROR
-  end
-end
-
-http_get(URL, OPTIONS)
 ```
 
 <aside class="notice"> You have to either have "Mingle administrator" permissions, or be a member of the team to make this call. </aside>
