@@ -20,6 +20,45 @@ http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/mu
 
 murmur[body]="hello there"
 ```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects/test_project/murmurs.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+PARAMS = { :murmur => { :body => 'Hey @team! I just finished a project.'} }
+
+def http_post(url, params, options={})
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  body = params.to_json
+
+  request = Net::HTTP::Post.new(uri.request_uri)
+  request.body = body
+  request['Content-Type'] = 'application/json'
+  request['Content-Length'] = body.bytesize
+
+  ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+  response = http.request(request)
+
+  if response.code.to_i > 300
+    raise StandardError, <<-ERROR
+    Request URL: #{url}
+    Response: #{response.code}
+    Response Message: #{response.message}
+    Response Headers: #{response.to_hash.inspect}
+    Response Body: #{response.body}
+    ERROR
+  end
+end
+
+http_post(URL, PARAMS, OPTIONS)
+```
 
 This is an example of a POST to create a new murmur in a project with identifier "test_project". 
 
@@ -28,6 +67,43 @@ This is an example of a POST to create a new murmur in a project with identifier
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/murmurs.xml
+```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects/test_project/murmurs.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+
+  request = Net::HTTP::Get.new(uri.request_uri)
+  ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+  response = http.request(request)
+  murmurs = response.body
+
+  if response.code.to_i > 300
+    raise StandardError, <<-ERROR
+    Request URL: #{url}
+    Response: #{response.code}
+    Response Message: #{response.message}
+    Response Headers: #{response.to_hash.inspect}
+    Response Body: #{response.body}
+    ERROR
+  end
+  
+  murmurs 
+
+end
+
+http_get(URL, OPTIONS)
 ```
 
 You can list all murmurs that are posted to your projects. This is an example of a GET to list all murmurs in a project with identifier "test_project".
@@ -48,6 +124,43 @@ GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/cards/1/murmurs.xml
 ```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects/test_project/murmurs/1.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+
+  request = Net::HTTP::Get.new(uri.request_uri)
+  ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+  response = http.request(request)
+  murmurs = response.body
+
+  if response.code.to_i > 300
+    raise StandardError, <<-ERROR
+    Request URL: #{url}
+    Response: #{response.code}
+    Response Message: #{response.message}
+    Response Headers: #{response.to_hash.inspect}
+    Response Body: #{response.body}
+    ERROR
+  end
+  
+  murmurs 
+
+end
+
+http_get(URL, OPTIONS)
+```
 
 Any murmurs that contain the 'card keyword + card number', e.g. story 1, #1, will appear on that cards' "Murmurs" section. This is an example of a GET to list all murmurs on a card with a card number of 1 in project with identifier "test_project". 
 
@@ -58,6 +171,49 @@ GET
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/murmurs.xml
 
 before_id=71
+```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/projects/test_project/murmurs.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+PARAMS = { :before_id => "41" }
+
+def http_get(url, options={}, params)
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  body = params.to_json
+
+  request = Net::HTTP::Get.new(uri.request_uri)
+  request.body = body
+  request['Content-Type'] = 'application/json'
+  request['Content-Length'] = body.bytesize
+
+  ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+  response = http.request(request)
+  murmurs = response.body
+
+  if response.code.to_i > 300
+    raise StandardError, <<-ERROR
+    Request URL: #{url}
+    Response: #{response.code}
+    Response Message: #{response.message}
+    Response Headers: #{response.to_hash.inspect}
+    Response Body: #{response.body}
+    ERROR
+  end
+
+  murmurs
+   
+end
+
+http_get(URL, OPTIONS, PARAMS)
 ```
 
 This is an example of a GET to list 25 murmurs in project with identifier "test_project" since the murmur with id 71.
