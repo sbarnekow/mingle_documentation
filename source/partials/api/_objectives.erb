@@ -18,6 +18,41 @@ GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/programs/test_program/plan/objectives/test_objective.xml
 ```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/programs/test_program/plan/objectives/test_objective.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+    ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+    response = http.request(request)
+    objective = response.body
+
+     if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
+      ERROR
+    end
+    objective 
+end
+
+http_get(URL, OPTIONS)
+```
 
 You can get information about a single objective on your program plan, including the objective number, name and identifier, start date and end date, and cards that have been added to the objective, either manually or via auto-sync.
 
@@ -26,6 +61,41 @@ You can get information about a single objective on your program plan, including
 GET
 
 http://yourname:password@your.mingle.server:8080/api/v2/programs/test_program/plan/objectives.xml
+```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/programs/test_program/plan/objectives.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+
+def http_get(url, options={})
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+
+  request = Net::HTTP::Get.new(uri.request_uri)
+  ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+  response = http.request(request)
+  objectives = response.body
+
+  if response.code.to_i > 300
+    raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
+      ERROR
+  end
+  objectives
+end
+
+http_get(URL, OPTIONS)
 ```
 
 You can get information about all objectives in your program plan, including the objective number, name and identifier as well as start and end dates.
@@ -40,6 +110,48 @@ objective[name]=new name
 objective[start_at]=2020-01-15
 objective[end_at]=2020-06-15
 ```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/programs/test_program/plan/objectives/new_objective.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+PARAMS = {:objective => 
+  { :name => "Objective's New Name" } 
+}
+
+def http_put(url, params, options={})
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true 
+  body = params.to_json
+
+  request = Net::HTTP::Put.new(uri.request_uri)
+  request.body = body
+  request['Content-Type'] = 'application/json'
+  request['Content-Length'] = body.bytesize
+
+  ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+  
+  objective = http.request(request)
+
+  if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+      Request URL: #{url}
+      Response: #{response.code}
+      Response Message: #{response.message}
+      Response Headers: #{response.to_hash.inspect}
+      Response Body: #{response.body}
+      ERROR
+  end
+  objective
+end
+
+http_put(URL, PARAMS, OPTIONS)
+```
 
 You can update different attributes of a planned objective, including its name, start date and end date. (Currently, this API does not support adding work to a planned objective.)
 
@@ -52,6 +164,45 @@ http://yourname:password@your.mingle.server:8080/api/v2/programs/test_program/pl
 objective[name] : The objective name
 objective[start_date] : The objective start date (yyyy-mm-dd format)
 objective[end_date] : The objective end date (yyyy-mm-dd format)
+```
+```ruby
+require 'net/http'
+require 'net/https'
+require 'time'
+require 'api-auth'
+require 'json'
+
+URL = 'https://<instance name>.mingle-api.thoughtworks.com/api/v2/programs/test_program/plans/objectives.xml'
+OPTIONS = {:access_key_id => '<MINGLE USERNAME>', :access_secret_key => '<MINGLE HMAC KEY>'}
+PARAMS = { :objective => { :name => "Some Objective", :start_at => "2015-11-25", :end_at => "2024-12-31"} }
+
+def http_post(url, params, options={})
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    body = params.to_json
+
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = body
+    request['Content-Type'] = 'application/json'
+    request['Content-Length'] = body.bytesize
+
+    ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
+
+    response = http.request(request)
+
+    if response.code.to_i > 300
+      raise StandardError, <<-ERROR
+        Request URL: #{url}
+        Response: #{response.code}
+        Response Message: #{response.message}
+        Response Headers: #{response.to_hash.inspect}
+        Response Body: #{response.body}
+        ERROR
+    end
+end
+
+puts http_post(URL, PARAMS, OPTIONS)
 ```
 
 The URL of api/v2/programs/test_program/plan/objectives.xml represents the list of objective resources for the program with identifier test_program. Upon execution of this request, the post parameters will be used to create an objective in the plan in the program with the identifier "test_program". The value of the name, start_at, and end_at attributes will be set to the respective specified values of "first objective", "January 15, 2020", and "June 15, 2020".
