@@ -63,13 +63,11 @@ POST
 
 http://yourname:password@your.mingle.server:8080/api/v2/projects/test_project/property_definitions.xml
 
-
 property_definition[name]=Status
 property_definition[data_type]=String
 property_definition[is_managed]=true
 property_definition[card_types][][name]=Story
 ```
-
 ```ruby
 require 'net/http'
 require 'net/https'
@@ -158,10 +156,7 @@ def http_get(url, options={})
     http.use_ssl = true
 
     request = Net::HTTP::Get.new(uri.request_uri)
-
-    if options[:access_key_id]
-      ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
-    end
+    ApiAuth.sign!(request, options[:access_key_id], options[:access_secret_key])
 
     response = http.request(request)
 
